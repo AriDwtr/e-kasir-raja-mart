@@ -16,16 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    // return view('welcome');
-    return redirect('/login');
+Route::view('/theme', 'theme.theme');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/', function () {
+        return redirect('/login');
+    });
+    Route::get('/login', [AuthController::class, 'LoginForm'])->name('login');
+    Route::post('/login/post', [AuthController::class, 'Login'])->name('login.post');
 });
 
-Route::view('/login', 'login')->name('login');
-Route::post('/login/post', [AuthController::class, 'Login'])->name('login.post');
 
 Route::middleware('auth')->group(function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/dashboard', 'dashboard.dashboard')->name('dashboard');
 
     Route::get('/barang/{kode_barang}', function ($kode_barang) {
         $barang = BarangModel::where('kd_brg', $kode_barang)->firstOrFail();
@@ -37,5 +40,7 @@ Route::middleware('auth')->group(function () {
     });
 
    Route::post('/transaksi/post', [TransaksiController::class, 'Transaksi'])->name('transaksi.post');
+
+   Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
 
 });
