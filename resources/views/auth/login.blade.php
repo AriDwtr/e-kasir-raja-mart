@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script>
+        history.pushState(null, document.title, location.href);
+        history.back();
+        history.forward();
+        window.onpopstate = function() {
+            history.go(1);
+        };
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('assets/sweetalert/dist/sweetalert2.min.css') }}"
         integrity="sha256-aUL5sUzmON2yonFVjFCojGULVNIOaPxlH648oUtA/ng=" crossorigin="anonymous">
@@ -170,6 +178,14 @@
         function Resetform() {
             $('#email').val('');
             $('#password').val('');
+        }
+
+        function DisableGoBack() {
+            history.pushState(null, null, location.href);
+            window.onpopstate = function() {
+                history.pushState(null, null, location.href);
+                // alert("Navigasi ke halaman sebelumnya tidak diizinkan.");
+            };
         }
     </script>
 </body>
