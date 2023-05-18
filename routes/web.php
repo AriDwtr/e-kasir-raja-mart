@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Barang\BarangController;
 use App\Http\Controllers\Transaksi\TransaksiController;
 use App\Models\BarangModel;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,9 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::view('/dashboard', 'dashboard.dashboard')->name('dashboard');
+
+    Route::get('/barang', [BarangController::class, 'listBarang'])->name('barang');
+    Route::get('/barang/get', [BarangController::class, 'getBarang'])->name('barang.get');
 
     Route::get('/barang/{kode_barang}', function ($kode_barang) {
         $barang = BarangModel::where('kd_brg', $kode_barang)->firstOrFail();

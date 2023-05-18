@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('img/icon/icon.png') }}">
     <title>E-Kasir</title>
     <script>
          history.pushState(null, document.title, location.href);
@@ -16,12 +17,12 @@
         };
     </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @yield('css')
     <link rel="stylesheet" href="{{ asset('assets/sweetalert/dist/sweetalert2.min.css') }}"
         integrity="sha256-aUL5sUzmON2yonFVjFCojGULVNIOaPxlH648oUtA/ng=" crossorigin="anonymous">
 </head>
 
-<body>
-
+<body class=" bg-slate-700">
     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
         type="button"
         class="items-center fixed p-2 mt-2 ml-3 bg-red-600 text-white text-sm rounded-lg sm:hidden hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -37,7 +38,7 @@
     @include('theme.sidebar')
 
     <div class="p-4 sm:ml-64">
-        <div class="border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+        <div class="body-content">
             @yield('konten')
         </div>
     </div>
