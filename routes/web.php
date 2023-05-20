@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/barang', [BarangController::class, 'listBarang'])->name('barang');
     Route::get('/barang/get', [BarangController::class, 'getBarang'])->name('barang.get');
+    Route::get('/barang/form/{type}/{id?}', [BarangController::class, 'formBarang'])->name('barang.form');
+    Route::get('/barang/post', [BarangController::class, 'postBarang'])->name('barang.post');
 
     Route::get('/barang/{kode_barang}', function ($kode_barang) {
         $barang = BarangModel::where('kd_brg', $kode_barang)->firstOrFail();

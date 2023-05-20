@@ -14,16 +14,16 @@
                         class="{{ request()->is('dashboard') ? 'text-white' : '' }} side-nav-text group-hover:text-white">Dashboard</span>
                 </a>
             </li>
-            <li class="{{ request()->is('barang') ? 'bg-blue-600 rounded-lg' : '' }}">
+            <li class="{{ Request::is('barang','barang/*') ? 'bg-blue-600 rounded-lg' : '' }}">
                 <a href="{{ route('barang') }}" class="side-nav-link group">
                     <svg aria-hidden="true"
-                        class="w-6 h-6 {{ request()->is('barang') ? 'text-white' : 'text-black' }} side-nav-icon-svg"
+                        class="w-6 h-6 {{ Request::is('barang','barang/*') ? 'text-white' : 'text-black' }} side-nav-icon-svg"
                         fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M12.378 1.602a.75.75 0 00-.756 0L3 6.632l9 5.25 9-5.25-8.622-5.03zM21.75 7.93l-9 5.25v9l8.628-5.032a.75.75 0 00.372-.648V7.93zM11.25 22.18v-9l-9-5.25v8.57a.75.75 0 00.372.648l8.628 5.033z" />
                     </svg>
                     <span
-                        class="{{ request()->is('barang') ? 'text-white' : '' }} side-nav-text group-hover:text-white">Barang</span>
+                        class="{{ Request::is('barang','barang/*') ? 'text-white' : '' }} side-nav-text group-hover:text-white">Barang</span>
                 </a>
             </li>
             <li class="{{ request()->is('logout') ? 'bg-blue-600 rounded-lg' : '' }}">

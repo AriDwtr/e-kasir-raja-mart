@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Barang;
 
 use App\Http\Controllers\Controller;
 use App\Repository\BarangRepository;
+use COM;
 use Illuminate\Http\Request;
 
 class BarangController extends Controller
@@ -27,4 +28,22 @@ class BarangController extends Controller
 
         return response()->json($data);
     }
+
+    public function formBarang($type, $id = null)
+    {
+        if ($type == 'add') {
+            $data = [];
+            $data['header'] = 'FORM BARANG MASUK';
+            $data['type'] = 'add';
+            return view('barang.frmbarang', compact('data'));
+        }
+        $data = [];
+        $data['header'] = 'FORM BARANG MASUK';
+        return view('barang.frmbarang', compact('data'));
+    }
+
+    // public function postBarang()
+    // {
+    //     $validasi = Valida
+    // }
 }

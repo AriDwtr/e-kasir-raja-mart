@@ -4,8 +4,8 @@
     <div class="flex-wrap h-auto p-4 rounded bg-slate-100 dark:bg-gray-800">
         <div class="w-full flex-wrap p-3 h-auto rounded bg-white dark:bg-gray-800">
             <div class="flex mb-2 p-1">
-                <button
-                    class="py-1 px-2 mr-2 bg-blue-500 hover:bg-blue-900 text-white text-sm font-semibold rounded-lg">Add</button>
+                <a href=" {{route('barang.form', ['type'=>'add'])}}"
+                    class="py-2 px-2 mr-2 bg-blue-500 hover:bg-blue-900 text-white text-sm font-semibold rounded-lg">Add</a>
                 <button onclick="handleEdit()"
                     class="py-1 px-2 mr-2  bg-yellow-300 hover:bg-blue-900 text-white text-sm font-semibold rounded-lg">View</button>
                 <button onclick="handleDelete()"
