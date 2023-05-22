@@ -38,6 +38,7 @@ class BarangController extends Controller
             $data['header'] = 'FORM BARANG MASUK';
             $data['type'] = 'add';
             $data['id'] = null;
+            $data['detail']['ktg_brg'] = null;
             return view('barang.frmbarang', compact('data'));
         }
         $data = [];
@@ -67,9 +68,10 @@ class BarangController extends Controller
                 return response()->json(['errors' => ['message' => 'Kode Barang Telah Di Gunakan'], 'status' => 'validasi'], 422);
             }
             $this->barangRepo->add($this->request->all());
-            return response()->json(['success' => ['message' => 'Barang Berhasil Di Simpan']], 200);
-        } elseif ($type === 'update') {
-            # code...
+            return response()->json(['success' => ['message' => 'Barang Berhasil Di Simpan'], 'status' => 'add'], 200);
+        }else if ($type === 'view'){
+            $this->barangRepo->update($this->request->all());
+            return response()->json(['success' => ['message' => 'Barang Berhasil Di Simpan'], 'status' => 'update'], 200);
         }
     }
 

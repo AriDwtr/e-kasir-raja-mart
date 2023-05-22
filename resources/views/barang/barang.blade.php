@@ -24,6 +24,7 @@
 @endsection
 
 @section('js-include')
+    <script src="{{ asset('assets/barcodejs/JsBarcode.all.min.js')}}"></script>
     <script src="{{ asset('assets/gridjs/dist/gridjs.umd.js') }}"></script>
     <script>
         const fetchData = async () => {
@@ -41,11 +42,17 @@
                                 name: 'Pilih',
                                 formatter: (cell, row) => {
                                     return gridjs.html(
-                                        `<input type="checkbox" name="pilih[]" value="${cell}" />`
+                                        `<div style="text-align: center;"><input type="checkbox" name="pilih[]" value="${cell}" /></div>`
                                     );
                                 },
                             },
-                            'Kode',
+                            // 'Kode',
+                            {
+                                name: 'Barcode',
+                                formatter: (cell) => {
+                                    return gridjs.html(`<img src="${cell}" alt="Barcode" />`);
+                                },
+                            },
                             'Nama Barang',
                             'Stok Barang',
                             'Harga Barang',
@@ -56,9 +63,9 @@
                                     resolve(
                                         filteredData.map((item) => [
                                             item.kd_brg,
-                                            item.kd_brg,
-                                            item.nm_brg,
-                                            item.stok,
+                                            generateBarcode(item.kd_brg),
+                                            item.nm_brg.toUpperCase(),
+                                            item.stok + ' / Pcs',
                                             formatRupiah(item.hrg_brg),
                                         ])
                                     ),
@@ -101,6 +108,27 @@
             }
         };
 
+        const generateBarcode = (kd_brg) => {
+            const canvas = document.createElement('canvas');
+            JsBarcode(canvas, kd_brg, {
+                format: 'CODE128',
+                displayValue: true,
+            });
+
+            const barcodeWidth = 100;
+            const barcodeHeight = 50;
+
+            const scaledCanvas = document.createElement('canvas');
+            const scaledContext = scaledCanvas.getContext('2d');
+            scaledCanvas.width = barcodeWidth;
+            scaledCanvas.height = barcodeHeight;
+            scaledContext.drawImage(canvas, 0, 0, barcodeWidth, barcodeHeight);
+
+            // Convert scaled canvas to base64 image URL
+            const barcodeUrl = scaledCanvas.toDataURL('image/png');
+
+            return barcodeUrl;
+        };
 
         function handleDelete() {
             const checkboxes = document.querySelectorAll('input[name="pilih[]"]:checked');
@@ -109,7 +137,7 @@
             if (selectedValues.length < 1) {
                 gagalAlert('Gagal !!! Belum Milih Barang');
                 return;
-            }
+            };
 
             Swal.fire({
                 title: 'Apakah ingin Menghapus Barang Terpilih ?',
@@ -142,9 +170,8 @@
                             });
                     });
                 }
-            })
-        }
-
+            });
+        };
 
         function handleEdit() {
             var laravelRoutes = <?php echo json_encode([
@@ -165,7 +192,7 @@
             const kdBrg = selectedValues[0];
             const url = laravelRoutes.barangForm.replace('__id__', kdBrg);
             window.location.href = url;
-        }
+        };
 
         function formatRupiah(number) {
             const formatter = new Intl.NumberFormat("id-ID", {
@@ -174,7 +201,7 @@
             });
 
             return formatter.format(number);
-        }
+        };
 
         function gagalAlert(message) {
             ToastTop.fire({
@@ -182,7 +209,7 @@
                 color: '#fc0f03',
                 title: message,
             });
-        }
+        };
 
         fetchData();
     </script>
