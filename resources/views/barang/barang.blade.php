@@ -26,123 +26,6 @@
 @section('js-include')
     <script src="{{ asset('assets/gridjs/dist/gridjs.umd.js') }}"></script>
     <script>
-        // const fetchData = async () => {
-        //     try {
-        //         const response = await fetch('/barang/get');
-        //         const data = await response.json();
-
-        //         const grid = new gridjs.html({
-        //             columns: ['Kode', 'Nama Barang', 'Stok Barang', 'Harga Barang',
-        //             ],
-        //             data: () => {
-        //                 return new Promise(resolve => {
-        //                     setTimeout(() =>
-        //                         resolve(data.map(item => [item.kd_brg, item.nm_brg, item
-        //                             .stok, formatRupiah(item.hrg_brg),html("<a href=''>test</a>")
-        //                         ])), 1000);
-        //                 });
-        //             },
-        //             resizable: true,
-        //             search: true,
-        //             pagination: {
-        //                 limit: 20,
-        //             },
-        //         }).render(document.getElementById('table-brg'));
-        //     } catch (error) {
-        //         console.error(error);
-        //     }
-        // };
-
-        // const fetchData = async () => {
-        //     try {
-        //         const response = await fetch('/barang/get');
-        //         const data = await response.json();
-
-        //         const searchInput = document.getElementById('search-input');
-
-        //         let grid = new gridjs.Grid({
-        //             columns: [{
-        //                 name: 'Pilih',
-        //                 formatter: (cell, row) => {
-        //                     return gridjs.html(
-        //                         `<input type="checkbox" name="pilih[]" value="${cell}" />`);
-        //                 }
-        //             }, 'Kode', 'Nama Barang', 'Stok Barang', 'Harga Barang'],
-        //             data: () => {
-        //                 return new Promise((resolve) => {
-        //                     setTimeout(() =>
-        //                         resolve(
-        //                             data.map((item) => [
-        //                                 item.kd_brg,
-        //                                 item.nm_brg,
-        //                                 item.stok,
-        //                                 formatRupiah(item.hrg_brg),
-        //                             ])
-        //                         ),
-        //                         1000
-        //                     );
-        //                 });
-        //             },
-        //             resizable: true,
-        //             pagination: {
-        //                 limit: 20,
-        //             },
-        //         }).render(document.getElementById('table-brg'));
-
-
-        //         // Custom search logic
-        //         searchInput.addEventListener('input', () => {
-        //             const searchTerm = searchInput.value.trim().toLowerCase();
-
-        //             // Filter the data based on the search term
-        //             const filteredData = data.filter((item) => {
-        //                 return (
-        //                     item.kd_brg.toString().toLowerCase().includes(searchTerm) ||
-        //                     item.nm_brg.toLowerCase().includes(searchTerm) ||
-        //                     item.stok.toString().toLowerCase().includes(searchTerm) ||
-        //                     item.hrg_brg.toString().includes(searchTerm)
-        //                 );
-        //             });
-
-        //             // Clear the existing grid
-        //             grid = grid.destroy();
-
-        //             // Create a new grid with the filtered data
-        //             grid = new gridjs.Grid({
-        //                 columns: [{
-        //                 name: 'Pilih',
-        //                 formatter: (cell, row) => {
-        //                     return gridjs.html(
-        //                         `<input type="checkbox" name="pilih[]" value="${cell}" />`);
-        //                 }
-        //             },'Kode', 'Nama Barang', 'Stok Barang', 'Harga Barang'],
-        //                 data: () => {
-        //                     return new Promise((resolve) => {
-        //                         setTimeout(() =>
-        //                             resolve(
-        //                                 filteredData.map((item) => [
-        //                                     item.kd_brg,
-        //                                     item.kd_brg,
-        //                                     item.nm_brg,
-        //                                     item.stok,
-        //                                     formatRupiah(item.hrg_brg),
-        //                                 ])
-        //                             ),
-        //                             1000
-        //                         );
-        //                     });
-        //                 },
-        //                 resizable: true,
-        //                 pagination: {
-        //                     limit: 20,
-        //                 },
-        //             }).render(document.getElementById('table-brg'));
-        //         });
-        //     } catch (error) {
-        //         console.error(error);
-        //     }
-        // };
-
         const fetchData = async () => {
             try {
                 const response = await fetch('/barang/get');
@@ -200,6 +83,7 @@
                     const filteredData = data.filter((item) => {
                         return (
                             item.kd_brg.toString().toLowerCase().includes(searchTerm) ||
+                            item.kd_brg.toString().toLowerCase().includes(searchTerm) ||
                             item.nm_brg.toLowerCase().includes(searchTerm) ||
                             item.stok.toString().toLowerCase().includes(searchTerm) ||
                             item.hrg_brg.toString().includes(searchTerm)
@@ -222,7 +106,6 @@
             const checkboxes = document.querySelectorAll('input[name="pilih[]"]:checked');
             const selectedValues = Array.from(checkboxes).map(checkbox => checkbox.value);
 
-            // Memeriksa jika selectedValues memiliki panjang kurang dari 1
             if (selectedValues.length < 1) {
                 gagalAlert('Gagal !!! Belum Milih Barang');
                 return;
@@ -236,8 +119,6 @@
                 cancelButtonText: `Batal`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Swal.fire('Saved!', '', 'success')
-                    // console.log('Delete items:', selectedValues);
                     selectedValues.forEach(kodeBrg => {
                         fetch(`/barang/delete/${kodeBrg}`, {
                                 method: 'DELETE',
@@ -258,7 +139,6 @@
                             })
                             .catch(error => {
                                 console.log('Terjadi kesalahan:', error);
-                                // Tangani kesalahan jika terjadi
                             });
                     });
                 }
@@ -270,8 +150,10 @@
             var laravelRoutes = <?php echo json_encode([
                 'barangForm' => route('barang.form', ['type' => 'view', 'id' => '__id__']),
             ]); ?>;
+
             const checkboxes = document.querySelectorAll('input[name="pilih[]"]:checked');
             const selectedValues = Array.from(checkboxes).map(checkbox => checkbox.value);
+
             if (selectedValues.length < 1) {
                 gagalAlert('Gagal !!! Belum Milih Barang');
                 return;

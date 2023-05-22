@@ -44,6 +44,8 @@ class BarangController extends Controller
         $data['header'] = 'FORM VIEW BARANG';
         $data['type'] = 'view';
         $data['id'] = $id;
+        $data['detail'] = $this->barangRepo->getBarang($data['id']);
+        // dd($data);
         return view('barang.frmbarang', compact('data'));
     }
 
