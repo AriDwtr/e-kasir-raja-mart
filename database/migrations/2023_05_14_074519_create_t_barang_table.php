@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('t_barang', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->bigInteger('kd_brg');
+            $table->bigInteger('kd_brg')->unique();
             $table->string('nm_brg', 100);
             $table->bigInteger('stok');
             $table->string('ktg_brg', 100)->nullable();

@@ -9,7 +9,7 @@
     <link rel="icon" href="{{ asset('img/icon/icon.png') }}">
     <title>E-Kasir</title>
     <script>
-         history.pushState(null, document.title, location.href);
+        history.pushState(null, document.title, location.href);
         history.back();
         history.forward();
         window.onpopstate = function() {
@@ -42,7 +42,8 @@
             @yield('konten')
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/sweetalert/dist/sweetalert2.all.min.js') }}"
         integrity="sha256-9AtIfusxXi0j4zXdSxRiZFn0g22OBdlTO4Bdsc2z/tY=" crossorigin="anonymous"></script>
     @yield('js-include')
@@ -78,6 +79,26 @@
             showConfirmButton: false,
             timer: 2000,
         });
+
+        const ToastTopEnd = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            width: 'auto',
+            showConfirmButton: false,
+            timer: 2000,
+        });
+
+        function inputValidate(error) {
+            $.each(error, function(key, value) {
+                $('#' + key).addClass('border-2 border-red-500 text-red-900');
+                $('#' + key + '_error').text(value[0]);
+            });
+        }
+
+        function resetValidate() {
+            $('.form-control').removeClass('border-2 border-red-500 text-red-900'); // Menghapus kelas CSS error dari semua input
+            $('.error-message').text('');
+        }
     </script>
 </body>
 

@@ -4,52 +4,68 @@
     <div class="flex-wrap h-auto p-4 rounded bg-slate-100 dark:bg-gray-800">
         <form id="post-brg">
             <div class=" justify-center py-5 px-3 w-100 rounded-lg h-full  bg-white dark:bg-gray-800">
-                <div class="mb-5">
+                <div class="mb-2">
                     <h1 class=" text-xl font-extrabold">{{ $data['header'] }}</h1>
                 </div>
+                <div class="flex w-auto h-auto mb-3 p-2">
+                    <a href=" {{ route('barang') }}"
+                        class="inline-flex items-center py-2 px-2 mr-2 bg-orange-500 hover:bg-orange-900 text-white text-sm font-semibold rounded-lg">
+                        <svg aria-hidden="true" class="w-4 h-4 mr-1 fill-current" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.195 18.44c1.25.713 2.805-.19 2.805-1.629v-2.34l6.945 3.968c1.25.714 2.805-.188 2.805-1.628V8.688c0-1.44-1.555-2.342-2.805-1.628L12 11.03v-2.34c0-1.44-1.555-2.343-2.805-1.629l-7.108 4.062c-1.26.72-1.26 2.536 0 3.256l7.108 4.061z" />
+                        </svg>
+                        back</a>
+                </div>
+                <input type="text" name="type" value="{{ $data['type'] }}">
+                <input type="text" name="id" value="{{ $data['id'] }}">
                 <div class="mb-2 p-1">
                     <label for="kd_brg" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Kode
                         Barang</label>
-                    <input type="text" name="kd_brg" id="kd_brg"
-                        value="{{ $data['type'] == 'edit' ? $data['kd_brg'] : '' }}"
-                        oninput="formatNumber(this)"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    <input type="text" name="kd_brg" id="kd_brg" autocomplete="off"
+                        value="{{ $data['type'] == 'edit' ? $data['kd_brg'] : '' }}" oninput="formatNumber(this)"
+                        class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Masukan Kode Barang">
+                    <p id="kd_brg_error" class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium"></p>
                 </div>
                 <div class="mb-2 p-1">
                     <label for="nm_brg" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Nama
                         Barang</label>
-                    <input type="text" name="nm_brg" id="nm_brg"
+                    <input type="text" name="nm_brg" id="nm_brg" autocomplete="off"
                         value="{{ $data['type'] == 'edit' ? $data['nm_brg'] : '' }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Masukan Nama Barang">
+                    <p id="nm_brg_error" class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium"></p>
                 </div>
                 <div class="grid gap-3 mb-3 md:grid-cols-3">
                     <div class="mb-1 p-1">
                         <label for="ktg_brg" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Kategori
                             Barang</label>
                         <select id="countries"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option disabled selected>Pilih Kategori Produk</option>
-                            <option value="US">United States</option>
+                            <option value="">--- Tidak Ada Kategori ---</option>
                         </select>
                     </div>
                     <div class="mb-1 p-1">
                         <label for="stok" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Stok
                             Barang</label>
-                        <input type="text" name="stok" id="stok"
-                            value="{{ $data['type'] == 'edit' ? $data['stok'] : '' }}"
-                            oninput="formatNumber(this)"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        <input type="text" name="stok" id="stok" autocomplete="off"
+                            value="{{ $data['type'] == 'edit' ? $data['stok'] : '' }}" oninput="formatNumber(this)"
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukan Stok Barang">
+                        <p id="stok_error" class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium">
+                        </p>
+
                     </div>
                     <div class="mb-1 p-1">
                         <label for="hrg_brg" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Harga
                             Barang</label>
-                        <input type="text" name="hrg_brg" id="hrg_brg"
+                        <input type="text" name="hrg_brg" id="hrg_brg" autocomplete="off"
                             value="{{ $data['type'] == 'edit' ? $data['hrg_brg'] : '' }}" oninput="formatCurrency(this)"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukan Harga Barang">
+                        <p id="hrg_brg_error" class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium">
+                        </p>
                     </div>
                 </div>
                 <div class="mb-2">
@@ -82,34 +98,52 @@
 @endsection
 
 @section('js-include')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $('#post-brg').submit(function(e) {
+                e.preventDefault();
+                resetValidate();
 
-        function postBarang() {
-            var formBarang = new FormData(document.getElementById('post-brg'));
-
-            $.ajax({
-                type: "post",
-                url: "/barang/post",
-                data: formBarang,
-                dataType: "json",
-                success: function (response) {
-
-                },
-                error : function (param) {
-
-                }
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('barang.post') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: formData,
+                    dataType: "json",
+                    success: function(res) {
+                        $('#post-brg')[0].reset();
+                        ToastTopEnd.fire({
+                            icon: 'success',
+                            color: '#00cc00',
+                            title: res.success.message,
+                        });
+                    },
+                    error: function(err) {
+                        if (err.status === 422) {
+                            var res = err.responseJSON;
+                            if (res.status == 'validasi') {
+                                $('#kd_brg').addClass('border-2 border-red-500 text-red-900');
+                                $('#kd_brg_error').text(res.errors.message);
+                            }
+                            inputValidate(res.errors);
+                        }
+                    }
+                });
             });
-        }
+        });
 
         function formatCurrency(input) {
             let formattedValue = numeral(input.value).format('0,0');
-                input.value = formattedValue;
+            input.value = formattedValue;
         }
 
         function formatNumber(input) {
             let formattedValue = numeral(input.value).format('0');
-                input.value = formattedValue;
+            input.value = formattedValue;
         }
     </script>
 @endsection

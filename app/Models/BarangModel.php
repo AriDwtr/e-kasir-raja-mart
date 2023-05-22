@@ -11,6 +11,7 @@ class BarangModel extends Model
     protected $table = 't_barang';
     protected $primaryKey = 'id';
     protected $fillable = [
+        'id',
         'kd_brg',
         'nm_brg',
         'stok',
