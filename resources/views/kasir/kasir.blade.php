@@ -1,63 +1,71 @@
 @extends('theme.master')
 
 @section('konten')
-    <div class="flex h-auto p-2 rounded  dark:bg-gray-800">
-        <div class=" grid grid-cols-1 gap-2 sm:grid-cols-3 ">
-            <div class=" bg-white p-3 rounded">
-                <form id="form-pembelian">
-                    <input type="text" id="kode_barang" name="kode_barang" placeholder="Kode Barang" value=""
-                        class=" rounded-xl border-2 border-red-600 w-full" required autofocus>
-                    <p id="helper-text-explanation" class="mt-1 ml-1 text-xs text-gray-500 dark:text-gray-400">Note: Use
-                        Barcode Scanner</p>
-
-                    <input type="number" class="form-control" id="jumlah" name="jumlah" value="1" disabled
-                        hidden>
-                </form>
-            </div>
-            <div class=" col-span-3 bg-white"></div>
-        </div>
-        {{-- <div class=" flex-wrap p-2 h-auto w-full rounded">
-            <div class="flex">
-                <div class="m-1 p-2 h-100 w-1/4">
+    <div class="flex h-auto p-2 rounded dark:bg-gray-800">
+        <div class=" grid w-full grid-cols-1 gap-y-2 sm:grid-cols-3 sm:gap-2">
+            <div class=" col-span-1">
+                <div class="bg-white p-3 mb-2 rounded">
                     <form id="form-pembelian">
                         <input type="text" id="kode_barang" name="kode_barang" placeholder="Kode Barang" value=""
                             class=" rounded-xl border-2 border-red-600 w-full" required autofocus>
                         <p id="helper-text-explanation" class="mt-1 ml-1 text-xs text-gray-500 dark:text-gray-400">Note: Use
                             Barcode Scanner</p>
-
                         <input type="number" class="form-control" id="jumlah" name="jumlah" value="1" disabled
                             hidden>
                     </form>
                 </div>
-                <div class="m-1 h-100 w-3/4 p-2">
+                <div class=" bg-white p-2 rounded">
+                    <div class=" font-bold text-base mb-2">
+                    Total Pembayaran:
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="total-pembayaran" name="total-pembayaran" placeholder="0" value="0"
+                        class=" rounded-xl border-2 w-full text-lg font-bold bg-slate-300 text-white" disabled>
+                    </div>
+                    <div class="mb-2 border-b-2 border-black w-full"></div>
                     <div>
-                        <form action="{{ route('transaksi.post') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            @method('post')
-                            <table id="table-pembelian" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-sm text-white uppercase bg-gray-400 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 rounded-l-lg">Kode Barang</th>
-                                        <th scope="col" class="px-6 py-3">Nama Barang</th>
-                                        <th scope="col" class="px-6 py-3">Harga Barang</th>
-                                        <th scope="col" class="px-6 py-3">Jumlah</th>
-                                        <th scope="col" class="px-6 py-3">Total Harga</th>
-                                        <th scope="col" class="px-6 py-3 rounded-r-lg"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Tabel akan diisi oleh JavaScript -->
-                                </tbody>
-                            </table>
-                            <button type="submit">transaksi</button>
-                        </form>
-                        <div>
-                            Total Pembayaran: Rp <span id="total-pembayaran">0</span>
-                        </div>
+                        <span class="text-base font-bold">Masukan Uang Pembayaran</span>
+                        <input type="number" id="" name="" placeholder="0" value=""
+                        class=" rounded-xl border-2 w-full text-lg font-bold" >
                     </div>
                 </div>
             </div>
-        </div> --}}
+            <div class="col-span-2 p-3 rounded bg-white w-full">
+                <div class="overflow-x-auto">
+                    <form action="{{ route('transaksi.post') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        @method('post')
+                        <table id="table-pembelian" class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Kode</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Nama Barang</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Harga Satuan</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Jumlah</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Total Harga</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Tabel akan diisi oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -90,14 +98,14 @@
 
             pembelian.forEach((item) => {
                 const tr = document.createElement('tr');
-                tr.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                // tr.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
                 tr.innerHTML = `
-            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"><input type="text" name="kd_brg[]" value="${item.kode_barang}" hidden>${item.kode_barang}</th>
-            <td class="px-6 py-4 font-medium text-gray-900">${item.nama_barang.toUpperCase()}</td>
-            <td class="px-6 py-4 font-medium text-gray-900">${'Rp ' + formatCurrency(item.harga_barang)}</td>
-            <td class="px-6 py-4">${item.jumlah_barang}</td>
-            <td class="px-6 py-4 font-medium text-gray-900">${'Rp ' + formatCurrency(item.subtotal)}</td>
-            <td class="px-6 py-4">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><input type="text" name="kd_brg[]" value="${item.kode_barang}" hidden>${item.kode_barang}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.nama_barang.toUpperCase()}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${'Rp ' + formatCurrency(item.harga_barang)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.jumlah_barang}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${'Rp ' + formatCurrency(item.subtotal)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                 <button id="hapus-barang" class="hapus-barang rounded text-red-500 p-1" data-kode="${item.kode_barang}">
                     <svg aria-hidden="true" class="w-4 h-4 mr-1 fill-current" fill="currentColor" viewBox="0 2 20 20"
                     xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +121,7 @@
                 });
             });
             // Memperbarui tampilan total pembayaran
-            total.innerHTML = hitungTotal();
+            total.value = formatCurrency(hitungTotal());
         }
 
         function hapusPembelianByKode(kodeBarang) {
