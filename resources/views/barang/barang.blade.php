@@ -115,8 +115,8 @@
                 displayValue: true,
             });
 
-            const barcodeWidth = 100;
-            const barcodeHeight = 50;
+            const barcodeWidth = 130;
+            const barcodeHeight = 80;
 
             const scaledCanvas = document.createElement('canvas');
             const scaledContext = scaledCanvas.getContext('2d');

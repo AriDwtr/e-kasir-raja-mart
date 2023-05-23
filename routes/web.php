@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/barang/post', [BarangController::class, 'postBarang'])->name('barang.post');
     Route::delete('/barang/delete/{kode_barang}', [BarangController::class, 'deleteBarang'])->name('barang.delete');
 
-   Route::view('/kasir', 'kasir');
+    Route::view('/kasir', 'kasir.kasir')->name('kasir');
 
     Route::get('/barang/{kode_barang}', function ($kode_barang) {
         $barang = BarangModel::where('kd_brg', $kode_barang)->firstOrFail();
