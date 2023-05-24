@@ -7,7 +7,7 @@
                 <div class="bg-white p-3 mb-2 rounded">
                     <form id="form-pembelian">
                         <input type="text" id="kode_barang" name="kode_barang" placeholder="Kode Barang" value=""
-                            class=" rounded-xl border-2 border-red-600 w-full" required autofocus>
+                            class=" rounded-xl border-2 border-red-600 w-full sm:text-sm" required autofocus>
                         <p id="helper-text-explanation" class="mt-1 ml-1 text-xs text-gray-500 dark:text-gray-400">Note: Use
                             Barcode Scanner</p>
                         <input type="number" class="form-control" id="jumlah" name="jumlah" value="1" disabled
@@ -16,18 +16,36 @@
                 </div>
                 <div class=" bg-white p-2 rounded">
                     <div class=" font-bold text-base mb-2">
-                    Total Pembayaran:
+                        Total Pembayaran
                     </div>
                     <div class="mb-3">
                         <input type="text" id="total-pembayaran" name="total-pembayaran" placeholder="0" value="0"
-                        class=" rounded-xl border-2 w-full text-lg font-bold bg-slate-300 text-white" disabled>
+                            class=" rounded-xl border-2 w-full sm:text-sm p-2 font-bold bg-slate-300 text-black" disabled>
                     </div>
-                    <div class="mb-2 border-b-2 border-black w-full"></div>
-                    <div>
-                        <span class="text-base font-bold">Masukan Uang Pembayaran</span>
-                        <input type="number" id="" name="" placeholder="0" value=""
-                        class=" rounded-xl border-2 w-full text-lg font-bold" >
+                    <div class="flex ml-1 mb-4">
+                        <div class="flex items-center h-5">
+                            <input id="checkbox" aria-describedby="helper-checkbox-text" type="checkbox" value=""
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        </div>
+                        <div class="ml-2 text-sm">
+                            <label for="helper-checkbox" class="font-medium text-gray-900 dark:text-gray-300">Check Bila
+                                Tanpa Pembayaran</label>
+                        </div>
                     </div>
+                    <div id="div-check" class="mb-4">
+                        <div class="mb-2 border-b-2 border-black w-full"></div>
+                        <div class="mb-3">
+                            <div class="text-base font-bold mb-1">Masukan Uang Pembayaran</div>
+                            <input type="number" id="jumlah-bayar" name="" placeholder="0" value=""
+                                class="rounded-xl border-2 w-full sm:text-sm p-2 font-bold">
+                        </div>
+                        <div>
+                            <p class="font-bold">Total Kembalian : <span id="total-kembalian"></span> </p>
+                        </div>
+                    </div>
+                    <button type="button" id="btn-proses"
+                        class="focus:outline-none w-full text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Proses
+                        Pesanan</button>
                 </div>
             </div>
             <div class="col-span-2 p-3 rounded bg-white w-full">
@@ -62,6 +80,7 @@
                                 <!-- Tabel akan diisi oleh JavaScript -->
                             </tbody>
                         </table>
+                        <input type="hidden" id="total-pemb" name="tbayar" value="">
                     </form>
                 </div>
             </div>
@@ -71,10 +90,42 @@
 
 @section('js-include')
     <script>
+        $(document).ready(function() {
+            $('#jumlah-bayar').on('input', function(e) {
+                var tBayar = parseInt($('#total-pembayaran').val().replace('.', ''));
+                var jBayar = $(this).val();
+                var hasil = tBayar - jBayar;
+
+                var hasilFormatted = hasil.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                });
+                $('#total-kembalian').text(hasilFormatted);
+            });
+
+            $('#checkbox').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#div-check').hide();
+                } else {
+                    $('#div-check').show();
+                }
+            });
+
+            $('#btn-proses').click(function(e) {
+                var tBayar = $('#total-pembayaran').val();
+                e.preventDefault();
+                if (tBayar === '0') {
+                   gagalAlert('Proses Gagal !!! Tidak Ada Barang Dalam Transaksi')
+                } else {
+                    console.log('true');
+                }
+            });
+        });
         // Mendefinisikan variabel global
         const form = document.querySelector('form');
         const tbody = document.querySelector('tbody');
         const total = document.querySelector('#total-pembayaran');
+        const total2 = document.getElementById("total-pemb");
         const inputBarang = document.getElementById("kode_barang");
         let pembelian = [];
         // let subtotalPembayaran = 0;
@@ -122,6 +173,7 @@
             });
             // Memperbarui tampilan total pembayaran
             total.value = formatCurrency(hitungTotal());
+            total2.value = formatCurrency(hitungTotal());
         }
 
         function hapusPembelianByKode(kodeBarang) {
@@ -214,5 +266,13 @@
             // Menampilkan data pembelian pada tabel
             tampilPembelian();
         }
+
+        function gagalAlert(message) {
+                ToastTop.fire({
+                    icon: 'error',
+                    color: '#fc0f03',
+                    title: message,
+                });
+            };
     </script>
 @endsection
