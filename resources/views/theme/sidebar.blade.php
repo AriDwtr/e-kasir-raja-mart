@@ -42,6 +42,12 @@
                         class="{{ Request::is('barang', 'barang/*') ? 'text-white' : '' }} side-nav-text group-hover:text-white">Barang</span>
                 </a>
             </li>
+        </ul>
+    </div>
+
+    <div
+        class="side-nav-style mt-4 h-full px-3 py-4 overflow-y-auto border-r-4 border-blue-700 rounded-r-xl bg-white dark:bg-gray-800">
+        <ul class="space-y-2 font-medium">
             <li class="{{ request()->is('logout') ? 'bg-blue-600 rounded-lg' : '' }}">
                 <a id="logout" href="#" class="side-nav-link group">
                     <svg aria-hidden="true"
