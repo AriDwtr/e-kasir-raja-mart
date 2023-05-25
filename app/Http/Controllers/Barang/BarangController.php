@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Barang;
 
 use App\Http\Controllers\Controller;
-use App\Models\BarangModel;
 use App\Repository\BarangRepository;
 use COM;
 use Illuminate\Http\Request;
@@ -29,6 +28,16 @@ class BarangController extends Controller
         $data = $this->barangRepo->all();
 
         return response()->json($data);
+    }
+
+    public function getBarangKasir($kode_barang)
+    {
+        $barang = $this->barangRepo->getBarang($kode_barang);
+
+        return [
+          'nama_barang' => $barang->nm_brg,
+          'harga_barang' => $barang->hrg_brg,
+        ];
     }
 
     public function formBarang($type, $id=null)
@@ -63,7 +72,7 @@ class BarangController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
         if ($type === 'add') {
-            $cekDataBarang = BarangModel::where('kd_brg', $this->request->kd_brg)->first();
+            $cekDataBarang = $this->barangRepo->getBarang( $this->request->kd_brg);
             if ($cekDataBarang) {
                 return response()->json(['errors' => ['message' => 'Kode Barang Telah Di Gunakan'], 'status' => 'validasi'], 422);
             }

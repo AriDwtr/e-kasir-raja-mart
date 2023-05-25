@@ -25,7 +25,7 @@
                     <div class="flex ml-1 mb-4">
                         <div class="flex items-center h-5">
                             <input id="checkbox" aria-describedby="helper-checkbox-text" type="checkbox" value=""
-                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                class="w-4 h-4 text-blue-600 bg-gray-300 border-blue-500 border-4 rounded focus:ring-red-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                         </div>
                         <div class="ml-2 text-sm">
                             <label for="helper-checkbox" class="font-medium text-gray-900 dark:text-gray-300">Check Bila
@@ -50,7 +50,7 @@
             </div>
             <div class="col-span-2 p-3 rounded bg-white w-full">
                 <div class="overflow-x-auto">
-                    <form action="{{ route('transaksi.post') }}" method="post" enctype="multipart/form-data">
+                    <form id="transaksi-post" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('post')
                         <table id="table-pembelian" class="min-w-full divide-y divide-gray-200">
@@ -115,9 +115,33 @@
                 var tBayar = $('#total-pembayaran').val();
                 e.preventDefault();
                 if (tBayar === '0') {
-                   gagalAlert('Proses Gagal !!! Tidak Ada Barang Dalam Transaksi')
+                    gagalAlert('Proses Gagal !!! Tidak Ada Barang Dalam Transaksi')
                 } else {
-                    console.log('true');
+                    Swal.fire({
+                        title: 'Apakah Ingin Memproses Transaksi Ini ?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Proses',
+                        cancelButtonText: `Batal`,
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                          var data =  $('#transaksi-post').serialize();
+                           $.ajax({
+                            type: "post",
+                            url: "{{ route('transaksi.push') }}",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: data,
+                            dataType: "json",
+                            success: function (res) {
+                                // console.log(res.message);
+                                Swal.fire(res.message, '', 'success');
+                                hapusPembelian();
+                            }
+                           });
+                        }
+                    });
                 }
             });
         });
@@ -129,6 +153,8 @@
         const inputBarang = document.getElementById("kode_barang");
         let pembelian = [];
         // let subtotalPembayaran = 0;
+
+        hapusPembelian();
 
         // Menghapus semua data pembelian
         function hapusPembelian() {
@@ -151,10 +177,10 @@
                 const tr = document.createElement('tr');
                 // tr.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
                 tr.innerHTML = `
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><input type="text" name="kd_brg[]" value="${item.kode_barang}" hidden>${item.kode_barang}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><input type="hidden" name="kd_brg[]" value="${item.kode_barang}">${item.kode_barang}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.nama_barang.toUpperCase()}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${'Rp ' + formatCurrency(item.harga_barang)}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${item.jumlah_barang}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><input type="hidden" name="jml_brg[]" value="${item.jumlah_barang}">${item.jumlah_barang}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${'Rp ' + formatCurrency(item.subtotal)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                 <button id="hapus-barang" class="hapus-barang rounded text-red-500 p-1" data-kode="${item.kode_barang}">
@@ -233,7 +259,8 @@
                 form.reset();
             } catch (error) {
                 // Menampilkan pesan error pada form input
-                tampilkanError('Kode Barang tidak ditemukan.');
+                // tampilkanError('Kode Barang tidak ditemukan.');
+                gagalAlert('Data Barang Tidak Di Temukan !!!')
             }
         });
 
@@ -268,11 +295,11 @@
         }
 
         function gagalAlert(message) {
-                ToastTop.fire({
-                    icon: 'error',
-                    color: '#fc0f03',
-                    title: message,
-                });
-            };
+            ToastTop.fire({
+                icon: 'error',
+                color: '#fc0f03',
+                title: message,
+            });
+        };
     </script>
 @endsection

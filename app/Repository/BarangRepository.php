@@ -23,7 +23,7 @@ class BarangRepository {
 
     public function getBarang($kd_brg)
     {
-        return $this->barang::where('kd_brg', $kd_brg)->first();
+        return $this->barang::where('kd_brg', $kd_brg)->firstOrFail();
     }
 
     public function add(array $post)

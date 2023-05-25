@@ -173,7 +173,7 @@
                     data: formData,
                     dataType: "json",
                     success: function(res) {
-                        console.log(res.status);
+                        // console.log(res.status);
                         // var res = res.responseJSON;
                         if (res.status === 'add') {
                             $('#post-brg')[0].reset();
