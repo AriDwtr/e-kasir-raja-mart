@@ -7,7 +7,7 @@
                 <div class="bg-white p-3 mb-2 rounded">
                     <form id="form-pembelian">
                         <input type="text" id="kode_barang" name="kode_barang" placeholder="Kode Barang" value=""
-                            class=" rounded-xl border-2 border-red-600 w-full sm:text-sm" required autofocus>
+                            class=" rounded-xl border-2 border-red-600 w-full sm:text-sm" required autofocus autocomplete="off">
                         <p id="helper-text-explanation" class="mt-1 ml-1 text-xs text-gray-500 dark:text-gray-400">Note: Use
                             Barcode Scanner</p>
                         <input type="number" class="form-control" id="jumlah" name="jumlah" value="1" disabled
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <button type="button" id="btn-proses"
-                        class="focus:outline-none w-full text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Proses
+                        class="focus:outline-none w-full font-extrabold text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Proses
                         Pesanan</button>
                 </div>
             </div>
@@ -91,6 +91,9 @@
 @section('js-include')
     <script>
         $(document).ready(function() {
+
+            checkBox();
+
             $('#jumlah-bayar').on('input', function(e) {
                 var tBayar = parseInt($('#total-pembayaran').val().replace('.', ''));
                 var jBayar = $(this).val();
@@ -104,11 +107,7 @@
             });
 
             $('#checkbox').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#div-check').hide();
-                } else {
-                    $('#div-check').show();
-                }
+                checkBox();
             });
 
             $('#btn-proses').click(function(e) {
@@ -144,6 +143,14 @@
                     });
                 }
             });
+
+            function checkBox(){
+                if ($('#checkbox').is(':checked')) {
+                    $('#div-check').hide();
+                } else {
+                    $('#div-check').show();
+                }
+            }
         });
         // Mendefinisikan variabel global
         const form = document.querySelector('form');
@@ -261,6 +268,7 @@
                 // Menampilkan pesan error pada form input
                 // tampilkanError('Kode Barang tidak ditemukan.');
                 gagalAlert('Data Barang Tidak Di Temukan !!!')
+                form.reset();
             }
         });
 
