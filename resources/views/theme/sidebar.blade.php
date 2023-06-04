@@ -47,20 +47,32 @@
 
     <div
         class="side-nav-style mt-4 h-full px-3 py-4 overflow-y-auto border-r-4 border-blue-700 rounded-r-xl bg-white dark:bg-gray-800">
-        <ul class="space-y-2 font-medium">
-            <li class="{{ request()->is('logout') ? 'bg-blue-600 rounded-lg' : '' }}">
-                <a id="logout" href="#" class="side-nav-link group">
-                    <svg aria-hidden="true"
-                        class="w-6 h-6 {{ request()->is('logout') ? 'text-white' : 'text-black' }} side-nav-icon-svg"
-                        fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M7.5 3.75A1.5 1.5 0 006 5.25v13.5a1.5 1.5 0 001.5 1.5h6a1.5 1.5 0 001.5-1.5V15a.75.75 0 011.5 0v3.75a3 3 0 01-3 3h-6a3 3 0 01-3-3V5.25a3 3 0 013-3h6a3 3 0 013 3V9A.75.75 0 0115 9V5.25a1.5 1.5 0 00-1.5-1.5h-6zm5.03 4.72a.75.75 0 010 1.06l-1.72 1.72h10.94a.75.75 0 010 1.5H10.81l1.72 1.72a.75.75 0 11-1.06 1.06l-3-3a.75.75 0 010-1.06l3-3a.75.75 0 011.06 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <span
-                        class="{{ request()->is('logout') ? 'text-white' : '' }} side-nav-text  group-hover:text-white">Logout</span>
-                </a>
-            </li>
-        </ul>
+        <div class="flex justify-center">
+            <div class="flex flex-col items-center">
+                <div class="mb-1">
+                    @if (Auth::user()->ft_user == null)
+                        <img class="rounded-full border-2 border-blue-500 w-20 h-20"
+                            src="{{ asset('storage/img/foto/default.png') }}" alt="image description">
+                    @else
+                        <img class="rounded-full border-2 border-blue-500 w-20 h-20"
+                            src="{{ asset('storage/img/foto/' . Auth::user()->ft_user) }}" alt="image description">
+                    @endif
+                </div>
+
+                <div class="mb-2">
+                    <a href="{{ route('profile') }}"
+                        class="text-center text-base font-extrabold w-full hover:text-blue-700">
+                        hai, {{ Str::upper(explode(' ', Auth::user()->nm_user)[0]) }}
+                    </a>
+                </div>
+
+                <div>
+                    <a id="logout" href="#"
+                        class="inline-block border-2 border-red-500 bg-red-500 hover:bg-white hover:border-red-600 hover:text-red-600 text-white font-bold py-1 px-2 rounded text-xs">
+                        Keluar
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </aside>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Barang\BarangController;
+use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Transaksi\TransaksiController;
 use App\Http\Controllers\Transaksi\TransaksiOutController;
 use App\Models\BarangModel;
@@ -46,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/barang/{kode_barang}', [BarangController::class, 'getBarangKasir']);
 
    Route::post('/transaksi/post', [TransaksiController::class, 'Transaksi'])->name('transaksi.post');
+
+   Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+   Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
    Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
 
