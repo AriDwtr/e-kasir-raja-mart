@@ -78,9 +78,9 @@
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Ubah
                                 Password</button>
                         </div>
-                        @include('profile.setpassword')
                     </div>
                 </form>
+                @include('profile.setpassword')
             </div>
         </div>
     </div>
@@ -89,16 +89,17 @@
 @section('js-include')
     <script>
         $(document).ready(function() {
+            var password = $('#password').val();
+            var repassword = $('#passwordretype').val();
 
             $("#submit").click(function(e) {
                 e.preventDefault();
-                // var data = $("#profile").serialize();
                 var form = document.getElementById('profile');
                 var data = new FormData(form);
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('profile.update') }}",
+                    url: "{{ route('profile.update', ['type'=>'profile']) }}",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -119,6 +120,29 @@
 
             });
 
+            $('#submitPassword').click(function(e) {
+                e.preventDefault();
+                var data = $('#change-password').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('profile.update', ['type'=>'password']) }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: data,
+                    dataType: "json",
+                    success: function (res) {
+
+                    },
+                    error: function (err) {
+                        if (err.status === 422) {
+                            var err = err.responseJSON;
+                            inputValidate(err.errors);
+                        }
+                    }
+                });
+            });
+
             $('#file').change(function() {
                 var file = $(this)[0].files[0];
                 var reader = new FileReader();
@@ -131,5 +155,45 @@
                 reader.readAsDataURL(file);
             });
         });
+
+        function passwordType() {
+            const passwordToggle = document.getElementById('password-visibility-icon');
+            const passwordInput = document.getElementById('password');
+            togglePasswordVisibility(passwordInput, passwordToggle);
+        }
+
+        function passwordRetype() {
+            const passwordToggle = document.getElementById('password-visibility-icon-passwordretype');
+            const passwordInput = document.getElementById('passwordretype');
+            togglePasswordVisibility(passwordInput, passwordToggle);
+        }
+
+        function togglePasswordVisibility(passwordInput, passwordToggle) {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.innerHTML = `
+                <svg id="password-visibility-icon" aria-hidden="true"
+                    class="w-6 h-6 text-slate-600 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                    fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"></path>
+                    <path clip-rule="evenodd" fill-rule="evenodd"
+                        d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z">
+                    </path>
+                </svg>
+                `;
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.innerHTML = `
+                <svg id="password-visibility-icon" aria-hidden="true"
+                    class="w-6 h-6 text-slate-600 transition duration-75 dark:text-gray-400 group-hover:text-white dark:group-hover:text-white"
+                    fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd" fill-rule="evenodd" d="M3.28 2.22a.75.75 0 00-1.06 1.06l14.5 14.5a.75.75 0 101.06-1.06l-1.745-1.745a10.029 10.029 0 003.3-4.38 1.651 1.651 0 000-1.185A10.004 10.004 0 009.999 3a9.956 9.956 0 00-4.744 1.194L3.28 2.22zM7.752 6.69l1.092 1.092a2.5 2.5 0 013.374 3.373l1.091 1.092a4 4 0 00-5.557-5.557z"></path>
+                    <path d="M10.748 13.93l2.523 2.523a9.987 9.987 0 01-3.27.547c-4.258 0-7.894-2.66-9.337-6.41a1.651 1.651 0 010-1.186A10.007 10.007 0 012.839 6.02L6.07 9.252a4 4 0 004.678 4.678z"></path>
+                </svg>
+                `;
+            }
+        }
     </script>
 @endsection

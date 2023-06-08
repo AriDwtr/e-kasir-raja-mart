@@ -13,9 +13,9 @@ class UserRepository {
         $this->userModel = $userModel;
     }
 
-    public function Update(array $post)
+    public function Update(array $post, $id)
     {
-        return $this->userModel->where('id', $post['id'])->update($post);
+        return $this->userModel->where('id', $id)->update($post);
     }
 
 }
