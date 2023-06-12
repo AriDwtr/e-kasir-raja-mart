@@ -23,13 +23,13 @@ class BarangRepository {
 
     public function getBarang($kd_brg)
     {
-        return $this->barang::where('kd_brg', $kd_brg)->firstOrFail();
+        return $this->barang::where('kd_brg', $kd_brg)->first();
     }
 
     public function add(array $post)
     {
         $post['hrg_brg'] = str_replace(',', '', $post['hrg_brg']);
-        $post['id'] = Str::uuid();
+        $post['id'] = '234343-2873834jskad';
         return $this->barang::create($post);
     }
 

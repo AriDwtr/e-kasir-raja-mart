@@ -132,7 +132,13 @@
                     data: data,
                     dataType: "json",
                     success: function (res) {
-
+                        $('[data-modal-hide="password-modal"]').click();
+                        $('#change-password')[0].reset();
+                        ToastTopEnd.fire({
+                            icon: 'success',
+                            color: '#00cc00',
+                            title: res.success.message,
+                        });
                     },
                     error: function (err) {
                         if (err.status === 422) {

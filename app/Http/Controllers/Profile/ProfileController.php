@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repository\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,7 +33,7 @@ class ProfileController extends Controller
         $data = $this->request->all();
         $id = Auth::user()->id;
         $validator = Validator::make($data, [
-            'password'=>'required',
+            'password'=>'required|min:6',
             'passwordretype'=>'required|same:password'
         ]);
         if ($type == 'profile') {
@@ -53,6 +54,10 @@ class ProfileController extends Controller
             if ($validator->fails()) {
                 return response()->json(['errors'=>$validator->errors()], 422);
             }
+            $data['password'] = Hash::make($data['password']);
+            unset($data['passwordretype']);
+            $this->userRepo->update($data, $id);
+            return response()->json(['success'=>['message'=>'Berhasil Perbaharui Password']], 200);
             // dd($data);
         }
     }

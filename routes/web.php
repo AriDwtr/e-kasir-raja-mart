@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Barang\BarangController;
+use App\Http\Controllers\Kategori\KategoriController;
+use App\Http\Controllers\Manajement\ManajementController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\Transaksi\TransaksiController;
 use App\Http\Controllers\Transaksi\TransaksiOutController;
@@ -33,24 +35,27 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::view('/dashboard', 'dashboard.dashboard')->name('dashboard');
 
-    Route::get('/barang', [BarangController::class, 'listBarang'])->name('barang');
-    Route::get('/barang/get', [BarangController::class, 'getBarang'])->name('barang.get');
-    Route::get('/barang/form/{type}/{id?}', [BarangController::class, 'formBarang'])->name('barang.form');
-    Route::post('/barang/post', [BarangController::class, 'postBarang'])->name('barang.post');
-    Route::delete('/barang/delete/{kode_barang}', [BarangController::class, 'deleteBarang'])->name('barang.delete');
-
-
     Route::post('/transaksi', [TransaksiOutController::class, 'pushTransaksi'])->name('transaksi.push');
 
     Route::view('/kasir', 'kasir.kasir')->name('kasir');
 
     Route::get('/barang/{kode_barang}', [BarangController::class, 'getBarangKasir']);
 
-   Route::post('/transaksi/post', [TransaksiController::class, 'Transaksi'])->name('transaksi.post');
+    Route::post('/transaksi/post', [TransaksiController::class, 'Transaksi'])->name('transaksi.post');
 
-   Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
-   Route::post('/profile/{type}', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/manajemen', [ManajementController::class, 'index'])->name('manajemen');
 
-   Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
+    Route::get('/manajemen/barang', [BarangController::class, 'listBarang'])->name('barang');
+    Route::get('/manajemen/barang/get', [BarangController::class, 'getBarang'])->name('barang.get');
+    Route::get('/manajemen/barang/form/{type}/{id?}', [BarangController::class, 'formBarang'])->name('barang.form');
+    Route::post('/manajemen/barang/post', [BarangController::class, 'postBarang'])->name('barang.post');
+    Route::delete('/manajemen/barang/delete/{kode_barang}', [BarangController::class, 'deleteBarang'])->name('barang.delete');
 
+    Route::get('/manajemen/kategori-produk', [KategoriController::class, 'katBarangIndex'])->name('kategori.produk');
+    Route::get('/manajemen/kategori-produk-get', [KategoriController::class, 'getAllKatBarang'])->name('kategori.produk.get');
+
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+    Route::post('/profile/{type}', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::post('/logout', [AuthController::class, 'Logout'])->name('logout');
 });

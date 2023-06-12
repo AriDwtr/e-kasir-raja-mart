@@ -1,7 +1,7 @@
 @extends('theme.master')
 
 @section('konten')
-    <div class="flex h-auto p-2 rounded dark:bg-gray-800">
+    <div class="flex h-auto p-0 rounded dark:bg-gray-800">
         <div class=" grid w-full grid-cols-1 gap-y-2 sm:grid-cols-3 sm:gap-2">
             <div class=" col-span-1">
                 <div class="bg-white p-3 mb-2 rounded">

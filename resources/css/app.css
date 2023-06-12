@@ -19,7 +19,7 @@
     /* side bar */
 
     .body-content {
-        @apply border-2 rounded-lg dark:border-gray-700
+        @apply border-2 border-none rounded-lg dark:border-gray-700
     }
 
     .button-blue {

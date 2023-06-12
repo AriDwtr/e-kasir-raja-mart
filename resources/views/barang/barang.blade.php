@@ -29,7 +29,7 @@
     <script>
         const fetchData = async () => {
             try {
-                const response = await fetch('/barang/get');
+                const response = await fetch('/manajemen/barang/get');
                 const data = await response.json();
 
                 const searchInput = document.getElementById('search-input');
@@ -148,7 +148,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     selectedValues.forEach(kodeBrg => {
-                        fetch(`/barang/delete/${kodeBrg}`, {
+                        fetch(`/manajemen/barang/delete/${kodeBrg}`, {
                                 method: 'DELETE',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

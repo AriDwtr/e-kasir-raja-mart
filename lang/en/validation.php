@@ -178,6 +178,14 @@ return [
         'hrg_brg' => [
             'required' => 'Harga Barang Tidak Boleh Kosong'
         ],
+        'password' => [
+            'required' => 'Password Tidak Boleh Kosong',
+            'min' => 'Karakter Password Minimal 6 Karakter'
+        ],
+        'passwordretype' => [
+            'required' => 'Password Tidak Boleh Kosong',
+            'same' => 'Penulisan Password Harus Sama'
+        ],
     ],
 
     /*

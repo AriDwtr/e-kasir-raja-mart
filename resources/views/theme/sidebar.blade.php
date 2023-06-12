@@ -2,7 +2,7 @@
     class="side-nav left-0 z-40 w-64 transition-transform -translate-x-full sm:translate-x-0 fixed top-4 h-auto"
     aria-label="Sidebar">
     <div
-        class="side-nav-style  h-full px-3 py-4 overflow-y-auto border-r-4 border-blue-700 rounded-r-xl bg-white dark:bg-gray-800">
+        class="side-nav-style h-full px-3 py-4 overflow-y-auto border-r-4 border-blue-700 rounded-r-xl bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
             <li class="{{ request()->is('dashboard') ? 'bg-blue-600 rounded-lg' : '' }}">
                 <a href="{{ route('dashboard') }}" class="side-nav-link group">
@@ -30,16 +30,23 @@
                         class="{{ request()->is('kasir') ? 'text-white' : '' }} side-nav-text group-hover:text-white">Kasir</span>
                 </a>
             </li>
-            <li class="{{ Request::is('barang', 'barang/*') ? 'bg-blue-600 rounded-lg' : '' }}">
-                <a href="{{ route('barang') }}" class="side-nav-link group">
+        </ul>
+    </div>
+
+    <div
+        class="side-nav-style mt-4 h-full px-3 py-4 overflow-y-auto border-r-4 border-blue-700 rounded-r-xl bg-white dark:bg-gray-800">
+        <ul class="space-y-2 font-medium">
+            <li class="{{ Request::is('manajemen', 'manajemen/*') ? 'bg-blue-600 rounded-lg' : '' }}">
+                <a href="{{ route('manajemen') }}" class="side-nav-link group">
                     <svg aria-hidden="true"
-                        class="w-6 h-6 {{ Request::is('barang', 'barang/*') ? 'text-white' : 'text-black' }} side-nav-icon-svg"
+                        class="w-6 h-6 {{ Request::is('manajemen', 'manajemen/*') ? 'text-white' : 'text-black' }} text-black side-nav-icon-svg"
                         fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12.378 1.602a.75.75 0 00-.756 0L3 6.632l9 5.25 9-5.25-8.622-5.03zM21.75 7.93l-9 5.25v9l8.628-5.032a.75.75 0 00.372-.648V7.93zM11.25 22.18v-9l-9-5.25v8.57a.75.75 0 00.372.648l8.628 5.033z" />
+                        <path d="M11.584 2.376a.75.75 0 01.832 0l9 6a.75.75 0 11-.832 1.248L12 3.901 3.416 9.624a.75.75 0 01-.832-1.248l9-6z" />
+                        <path fill-rule="evenodd" d="M20.25 10.332v9.918H21a.75.75 0 010 1.5H3a.75.75 0 010-1.5h.75v-9.918a.75.75 0 01.634-.74A49.109 49.109 0 0112 9c2.59 0 5.134.202 7.616.592a.75.75 0 01.634.74zm-7.5 2.418a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75zm3-.75a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0v-6.75a.75.75 0 01.75-.75zM9 12.75a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75z" clip-rule="evenodd" />
+                        <path d="M12 7.875a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" />
                     </svg>
                     <span
-                        class="{{ Request::is('barang', 'barang/*') ? 'text-white' : '' }} side-nav-text group-hover:text-white">Barang</span>
+                        class="{{ Request::is('manajemen', 'manajemen/*') ? 'text-white' : '' }} side-nav-text group-hover:text-white">Management Sistem</span>
                 </a>
             </li>
         </ul>
