@@ -26,8 +26,6 @@ class UserModel extends Authenticatable
         'tgl_lahir',
         'password',
         'ft_user',
-        'fitur1',
-        'fitur2',
         'role',
     ];
 

@@ -31,7 +31,11 @@
                     <div class="max-w-md mx-auto">
                         <div class=" p-5 border-b-2 border-red-300">
                             <h1 class=" font-extrabold text-4xl text-center tracking-widest">
-                                {{ Str::upper('e - inventory raja mart') }}</h1>
+                                @php
+                                $site = DB::table('t_setting_site')->select('nama_site')->where('id', 1)->first();
+                                echo strtoupper($site->nama_site);
+                                @endphp
+                            </h1>
                         </div>
                         <div class="divide-y divide-black mt-10">
                             <form id="login-form">

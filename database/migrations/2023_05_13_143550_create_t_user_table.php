@@ -19,9 +19,7 @@ return new class extends Migration
             $table->date('tgl_lahir')->nullable();
             $table->text('password');
             $table->text('ft_user')->nullable();
-            $table->string('fitur1', 1);
-            $table->string('fitur2', 1);
-            $table->string('role', 10)->nullable();
+            $table->string('role', 1)->nullable();
             $table->timestamps();
         });
     }

@@ -19,10 +19,8 @@ class UserSeeder extends Seeder
             'nm_user'=>'admin',
             'email_user'=>'admin@admin',
             'gender'=>'L',
-            'password'=>Hash::make('password'),
-            'fitur1'=>1,
-            'fitur2'=>1,
-            'role'=>'admin',
+            'password'=>Hash::make('123456'),
+            'role'=>1,
         ]);
     }
 }

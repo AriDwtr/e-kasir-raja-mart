@@ -1,3 +1,6 @@
+@php
+$site = DB::table('t_setting_site')->select('nama_site')->where('id', 1)->first();
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('img/icon/icon.png') }}">
-    <title>E-Kasir</title>
+    <title>{{ Str::upper($site->nama_site) }}</title>
     <script>
         history.pushState(null, document.title, location.href);
         history.back();

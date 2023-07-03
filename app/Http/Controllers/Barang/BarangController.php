@@ -61,8 +61,8 @@ class BarangController extends Controller
 
     public function postBarang()
     {
-        $type = $this->request->type;
-        $validator = Validator::make($this->request->all(), [
+        $data = $this->request->all();
+        $validator = Validator::make($data, [
             'kd_brg' => 'required',
             'nm_brg' => 'required',
             'stok' => 'required',
@@ -71,15 +71,15 @@ class BarangController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-        if ($type === 'add') {
-            $cekDataBarang = $this->barangRepo->getBarang( $this->request->kd_brg);
+        if ($data['type'] === 'add') {
+            $cekDataBarang = $this->barangRepo->getBarang($data['kd_brg']);
             if ($cekDataBarang) {
                 return response()->json(['errors' => ['message' => 'Kode Barang Telah Di Gunakan'], 'status' => 'validasi'], 422);
             }
-            $this->barangRepo->add($this->request->all());
+            $this->barangRepo->add($data);
             return response()->json(['success' => ['message' => 'Barang Berhasil Di Simpan'], 'status' => 'add'], 200);
-        }else if ($type === 'view'){
-            $this->barangRepo->update($this->request->all());
+        }else if ($data['type'] === 'view'){
+            $this->barangRepo->update($data);
             return response()->json(['success' => ['message' => 'Barang Berhasil Di Simpan'], 'status' => 'update'], 200);
         }
     }

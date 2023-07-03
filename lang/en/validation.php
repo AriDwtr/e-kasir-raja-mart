@@ -186,6 +186,22 @@ return [
             'required' => 'Password Tidak Boleh Kosong',
             'same' => 'Penulisan Password Harus Sama'
         ],
+        'jenis_kategori'=>[
+            'required'=>'Jenis Kategori Tidak Boleh Kosong',
+            'unique'=>'Jenis Kategori Telah Di Ada'
+        ],
+        'tipe_akun'=>[
+            'required'=>'Tipe Akun Tidak Boleh Kosong',
+            'unique'=>'Tipe Akun Telah Di Ada'
+        ],
+        'nm_user'=>[
+            'required'=>'Nama Pengguna Tidak Boleh Kosong',
+            'unique'=>'Nama Pengguna Telah Di Terdaftar'
+        ],
+        'email_user'=>[
+            'required'=>'Nama Pengguna Tidak Boleh Kosong',
+            'unique'=>'Nama Pengguna Telah Di Terdaftar'
+        ]
     ],
 
     /*
