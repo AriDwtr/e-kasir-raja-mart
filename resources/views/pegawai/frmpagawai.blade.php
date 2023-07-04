@@ -18,13 +18,13 @@
                     <div class="flex flex-col items-center">
                         <div class="mb-1">
                             @if ($data['type'] == 'add')
-                                <img id="img"
+                                {{-- <img id="img"
                                     class="rounded-full border-2 border-blue-500 w-40 h-40 transition duration-300 transform hover:scale-110"
-                                    src="{{ asset('storage/img/foto/default.png') }}" alt="image description">
+                                    src="{{ asset('storage/img/foto/default.png') }}" alt="image description"> --}}
                             @else
-                                <img id="img"
+                                {{-- <img id="img"
                                     class="rounded-full border-2 border-blue-500 w-40 h-40 transition duration-300 transform hover:scale-110"
-                                    src="{{ asset('storage/img/foto/' . $data['ft_user'] ?? '') }}" alt="image description">
+                                    src="{{ asset('storage/img/foto/' . $data['ft_user'] ?? '') }}" alt="image description"> --}}
                             @endif
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                                 <?php
                                 $roleQuery = DB::table('t_tipe_akun')->get();
                                 foreach ($roleQuery as $roleAkun) {
-                                    echo '<option value="' . $roleAkun->id . '" ' . (($data['role'] ?? '') == 'P' ? 'selected' : '') . '>' . strtoupper($roleAkun->tipe_akun) . '</option>';
+                                    echo '<option value="' . $roleAkun->id . '" ' . (($data['role'] ?? '') == $roleAkun->id ? 'selected' : '') . '>' . strtoupper($roleAkun->tipe_akun) . '</option>';
                                 }
                                 ?>
                             </select>
@@ -102,10 +102,10 @@
                             <button type="button" id="submit-pegawai"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Buat
                                 Pegawai Baru</button>
-                            {{-- <button type="button" id="password-pegawai" data-modal-target="password-modal"
+                            <button type="button" id="password-pegawai" data-modal-target="password-modal"
                                 data-modal-toggle="password-modal"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Ubah
-                                Password</button> --}}
+                                Password</button>
                         </div>
                     </div>
                 </form>
@@ -156,34 +156,34 @@
 
             });
 
-            // $('#submitPassword').click(function(e) {
-            //     e.preventDefault();
-            //     var data = $('#change-password').serialize();
-            //     $.ajax({
-            //         type: "POST",
-            //         url: "{{ route('profile.update', ['type' => 'password']) }}",
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //         },
-            //         data: data,
-            //         dataType: "json",
-            //         success: function(res) {
-            //             $('[data-modal-hide="password-modal"]').click();
-            //             $('#change-password')[0].reset();
-            //             ToastTopEnd.fire({
-            //                 icon: 'success',
-            //                 color: '#00cc00',
-            //                 title: res.success.message,
-            //             });
-            //         },
-            //         error: function(err) {
-            //             if (err.status === 422) {
-            //                 var err = err.responseJSON;
-            //                 inputValidate(err.errors);
-            //             }
-            //         }
-            //     });
-            // });
+            $('#submitPassword').click(function(e) {
+                e.preventDefault();
+                var data = $('#change-password').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('profile.update', ['type' => 'password']) }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: data,
+                    dataType: "json",
+                    success: function(res) {
+                        $('[data-modal-hide="password-modal"]').click();
+                        $('#change-password')[0].reset();
+                        ToastTopEnd.fire({
+                            icon: 'success',
+                            color: '#00cc00',
+                            title: res.success.message,
+                        });
+                    },
+                    error: function(err) {
+                        if (err.status === 422) {
+                            var err = err.responseJSON;
+                            inputValidate(err.errors);
+                        }
+                    }
+                });
+            });
 
             $('#file').change(function() {
                 var file = $(this)[0].files[0];
@@ -244,6 +244,16 @@
                 $('#password-pegawai').hide();
             } else {
                 $('#submit-pegawai').html('Update Data Pegawai');
+            }
+        }
+
+        function TypeForm() {
+            var TypeForm = $('#type').val();
+            if (TypeForm === 'view') {
+                $('#password-pegawai').show();
+
+            }else if(TypeForm === 'add'){
+                $('#password-pegawai').hide();
             }
         }
     </script>

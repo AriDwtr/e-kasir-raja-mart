@@ -178,7 +178,7 @@
             }
 
             const id = selectedValues[0];
-            const url = laravelRoutes.barangForm.replace('__id__', id);
+            const url = laravelRoutes.pegawaiForm.replace('__id__', id);
             window.location.href = url;
         };
 

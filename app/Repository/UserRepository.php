@@ -13,8 +13,14 @@ class UserRepository {
         $this->userModel = $userModel;
     }
 
-    public function getUser(){
-        return $this->userModel->join('t_tipe_akun',  't_tipe_akun.id', '=', 't_user.role')->select('t_user.id','t_user.nm_user', 't_user.email_user', 't_tipe_akun.tipe_akun')->orderBy('t_user.created_at', 'ASC')->get();
+    public function getUser($id=''){
+
+        if (empty($id)) {
+            $data = $this->userModel->join('t_tipe_akun',  't_tipe_akun.id', '=', 't_user.role')->select('t_user.id','t_user.nm_user', 't_user.email_user', 't_tipe_akun.tipe_akun')->orderBy('t_user.created_at', 'ASC')->get();
+        }else{
+            $data = $this->userModel->where('id', $id)->first();
+        }
+        return $data;
     }
 
     public function Post(array $post){

@@ -36,7 +36,8 @@ class PegawaiController extends Controller
         $data = [];
         if ($type == 'add') {
             $data['type'] = $type;
-        }elseif ($type == 'update') {
+        }elseif ($type == 'view') {
+            $data = $this->pegawai->getUser($id);
             $data['type'] = $type;
             $data['id']=$id;
         }
