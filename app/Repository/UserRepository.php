@@ -14,6 +14,7 @@ class UserRepository
         $this->userModel = $userModel;
     }
 
+<<<<<<< HEAD
     public function getUser($type = '', $id = '')
     {
         if ($type == 'update') {
@@ -21,6 +22,16 @@ class UserRepository
         } else {
             return $this->userModel->join('t_tipe_akun',  't_tipe_akun.id', '=', 't_user.role')->select('t_user.id', 't_user.nm_user', 't_user.email_user', 't_tipe_akun.tipe_akun')->orderBy('t_user.created_at', 'ASC')->get();
         }
+=======
+    public function getUser($id=''){
+
+        if (empty($id)) {
+            $data = $this->userModel->join('t_tipe_akun',  't_tipe_akun.id', '=', 't_user.role')->select('t_user.id','t_user.nm_user', 't_user.email_user', 't_tipe_akun.tipe_akun')->orderBy('t_user.created_at', 'ASC')->get();
+        }else{
+            $data = $this->userModel->where('id', $id)->first();
+        }
+        return $data;
+>>>>>>> cd2c9d08e97a00414f9f6b2bd9c65c86c4efefcf
     }
 
     public function Post(array $post)

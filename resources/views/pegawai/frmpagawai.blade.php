@@ -18,14 +18,18 @@
                     <div class="flex flex-col items-center">
                         <div class="mb-1">
                             @if ($data['type'] == 'add')
-                                <img id="img"
+                                {{-- <img id="img"
                                     class="rounded-full border-2 border-blue-500 w-40 h-40 transition duration-300 transform hover:scale-110"
-                                    src="{{ asset('storage/img/foto/default.png') }}" alt="image description">
+                                    src="{{ asset('storage/img/foto/default.png') }}" alt="image description"> --}}
                             @else
-                                <img id="img"
+                                {{-- <img id="img"
                                     class="rounded-full border-2 border-blue-500 w-40 h-40 transition duration-300 transform hover:scale-110"
+<<<<<<< HEAD
                                     src="{{ isset($data['ft_user']) ? asset('storage/img/foto/' . $data['ft_user']) : asset('storage/img/foto/default.png') }}"
                                     alt="image description">
+=======
+                                    src="{{ asset('storage/img/foto/' . $data['ft_user'] ?? '') }}" alt="image description"> --}}
+>>>>>>> cd2c9d08e97a00414f9f6b2bd9c65c86c4efefcf
                             @endif
                         </div>
                     </div>
@@ -166,7 +170,11 @@
                 var data = $('#change-password').serialize();
                 $.ajax({
                     type: "POST",
+<<<<<<< HEAD
                     url: "{{ route('pegawai.password', ['id' => ($data['id'] ?? '')]) }}",
+=======
+                    url: "{{ route('profile.update', ['type' => 'password']) }}",
+>>>>>>> cd2c9d08e97a00414f9f6b2bd9c65c86c4efefcf
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -250,6 +258,16 @@
             } else {
                 $('#submit-pegawai').html('Update Data Pegawai');
                 $('#info-password').hide();
+            }
+        }
+
+        function TypeForm() {
+            var TypeForm = $('#type').val();
+            if (TypeForm === 'view') {
+                $('#password-pegawai').show();
+
+            }else if(TypeForm === 'add'){
+                $('#password-pegawai').hide();
             }
         }
     </script>
