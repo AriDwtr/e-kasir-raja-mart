@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Barang\BarangController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Kategori\KategoriController;
 use App\Http\Controllers\Manajement\ManajementController;
 use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\Transaksi\TransaksiController;
+use App\Http\Controllers\Report\ReportController;
+use App\Http\Controllers\Transaksi\TransaksiINController;
 use App\Http\Controllers\Transaksi\TransaksiOutController;
-use App\Models\BarangModel;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,15 +35,13 @@ Route::middleware('guest')->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::view('/dashboard', 'dashboard.dashboard')->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/transaksi', [TransaksiOutController::class, 'pushTransaksi'])->name('transaksi.push');
 
     Route::view('/kasir', 'kasir.kasir')->name('kasir');
 
     Route::get('/barang/{kode_barang}', [BarangController::class, 'getBarangKasir']);
-
-    Route::post('/transaksi/post', [TransaksiController::class, 'Transaksi'])->name('transaksi.post');
 
     Route::get('/manajemen', [ManajementController::class, 'index'])->name('manajemen');
 
@@ -51,11 +50,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/manajemen/barang/form/{type}/{id?}', [BarangController::class, 'formBarang'])->name('barang.form');
     Route::post('/manajemen/barang/post', [BarangController::class, 'postBarang'])->name('barang.post');
     Route::delete('/manajemen/barang/delete/{kode_barang}', [BarangController::class, 'deleteBarang'])->name('barang.delete');
+    Route::get('/manajemen/barang/print/{id?}', [BarangController::class, 'printBarang'])->name('barang.print');
+
+    Route::get('/manajemen/transaksi/in', [TransaksiINController::class, 'index'])->name('transaksi.in');
+    Route::post('/manajemen/transaksi/in/baru', [TransaksiINController::class, 'transaksiBaru'])->name('transaksi.in.baru');
+    Route::post('/manajemen/transaksi/in/getBarang', [TransaksiINController::class, 'getDataBarang'])->name('transaksi.in.get');
+    Route::get('/manajemen/transaksi/in/getTransaksi', [TransaksiINController::class, 'getTransaksiIN']);
+
+    Route::get('/manajemen/transaksi/out', [TransaksiOutController::class, 'index'])->name('transaksi.out');
+    Route::get('/manajemen/transaksi/out/getTransaksi', [TransaksiOutController::class, 'getTransaksiOUT']);
+
+    Route::get('/manajemen/report', [ReportController::class, 'index'])->name('report.index');
+    Route::get('/manajemen/report/print', [ReportController::class, 'print'])->name('report.print');
 
     Route::get('/manajemen/pegawai', [PegawaiController::class, 'listPegawai'])->name('pegawai');
     Route::get('/manajemen/pegawai/get', [PegawaiController::class, 'getPegawai'])->name('pegawai.get');
     Route::get('/manajemen/pegawai/form/{type}/{id?}', [PegawaiController::class, 'formPegawai'])->name('pegawai.form');
     Route::post('/manajemen/pegawai', [PegawaiController::class, 'setPegawai'])->name('pegawai.post');
+    Route::post('/manajemen/pegawai/password/{id?}', [PegawaiController::class, 'setPegawaiPassword'])->name('pegawai.password');
     Route::delete('/manajemen/pegawai/delete/{id}', [PegawaiController::class, 'deletePegawai'])->name('pegawai.delete');
 
     Route::get('/manajemen/kategori-produk', [KategoriController::class, 'katBarangIndex'])->name('kategori.produk');

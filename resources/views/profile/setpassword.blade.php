@@ -16,7 +16,7 @@
             </button>
             <div class="px-6 py-6 lg:px-8">
                 <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Ubah Password</h3>
-                <form id="change-password">
+                <form id="change-password" enctype="multipart/form-data" method="post">
                     <div class="mb-2">
                         <label for="password"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password Baru</label>

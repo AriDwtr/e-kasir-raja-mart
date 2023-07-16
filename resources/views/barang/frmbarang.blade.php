@@ -51,7 +51,7 @@
                     <label for="kd_brg" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Kode
                         Barang</label>
                     <input type="text" name="kd_brg" id="kd_brg" autocomplete="off"
-                        value="{{ $data['type'] == 'view' ? $data['detail']['kd_brg'] : '' }}" oninput="formatNumber(this)"
+                        value="{{ $data['detail']['kd_brg'] ?? '' }}" oninput="formatNumber(this)"
                         class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Masukan Kode Barang">
                     <p id="kd_brg_error" class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium"></p>
@@ -60,46 +60,63 @@
                     <label for="nm_brg" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Nama
                         Barang</label>
                     <input type="text" name="nm_brg" id="nm_brg" autocomplete="off"
-                        value="{{ $data['type'] == 'view' ? $data['detail']['nm_brg'] : '' }}"
+                        value="{{ $data['detail']['nm_brg'] ?? '' }}"
                         class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Masukan Nama Barang">
                     <p id="nm_brg_error" class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium"></p>
                 </div>
-                <div class="grid gap-3 mb-3 md:grid-cols-3">
+                <div class="grid gap-3 md:grid-cols-3">
                     <div class="mb-1 p-1">
-                        <label for="ktg_brg" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Kategori
+                        <label for="ktg_brg" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Kategori
                             Barang</label>
                         <select id="ktg_brg" name="ktg_brg"
-                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm font-bold rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option disabled selected>Pilih Kategori Produk</option>
-                            <option value="999"
-                                @if ($data['type'] == 'view') {{ $data['detail']['ktg_brg'] == 999 ? 'selected' : '' }}
-                            @else
-                            selected @endif>
-                                Seluruh Kategori</option>
+                            @foreach ($data['kategori'] as $kategori)
+                                <option value="{{ $kategori->id }}" {{ $data['detail']['ktg_brg'] == $kategori->id ? 'selected' : ''  }}>{{ Str::upper($kategori->jenis_kategori) }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-1 p-1">
-                        <label for="stok" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Stok
+                        <label for="stok_in" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Stok
                             Barang</label>
-                        <input type="text" name="stok" id="stok" autocomplete="off"
-                            value="{{ $data['type'] == 'view' ? $data['detail']['stok'] : '' }}"
-                            oninput="formatNumber(this)"
+                        <input type="text" name="stok" id="stok" value="{{ $data['detail']['stok'] ?? '' }}" oninput="formatNumber(this)"
                             class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukan Stok Barang">
-                        <p id="stok_error" class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium">
+                        <p id="stok_in_error" class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium">
                         </p>
 
                     </div>
                     <div class="mb-1 p-1">
-                        <label for="hrg_brg" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Harga
-                            Barang</label>
-                        <input type="text" name="hrg_brg" id="hrg_brg" autocomplete="off"
-                            value="{{ $data['type'] == 'view' ? $data['detail']['hrg_brg'] : '' }}"
-                            oninput="formatCurrency(this)"
+                        <label for="stok" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Tanggal
+                            Expired Produk</label>
+                        <input type="date" name="expired_brg" id="expired_brg" value="{{ $data['detail']['expired_brg'] ?? '' }}"
                             class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Masukan Harga Barang">
-                        <p id="hrg_brg_error"
+                            placeholder="">
+                    </div>
+                </div>
+                <div class="grid gap-2 mb-3 md:grid-cols-2">
+                    <div class="mb-1 p-1">
+                        <label for="hrg_brg_beli"
+                            class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Harga
+                            Barang Beli</label>
+                        <input type="text" name="hrg_brg_beli" id="hrg_brg_beli" value="{{ $data['detail']['hrg_brg_beli'] ?? '' }}"
+                            onfocusout="formatCurrency(this)"
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Masukan Harga Barang Beli">
+                        <p id="hrg_brg_beli_error"
+                            class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium">
+                        </p>
+                    </div>
+                    <div class="mb-1 p-1">
+                        <label for="hrg_brg_jual"
+                            class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Harga
+                            Barang Jual</label>
+                        <input type="text" name="hrg_brg_jual" id="hrg_brg_jual" value="{{ $data['detail']['hrg_brg_jual'] ?? '' }}"
+                            onfocusout="formatCurrency(this)"
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Masukan Harga Barang Jual">
+                        <p id="hrg_brg_jual_error"
                             class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium">
                         </p>
                     </div>
@@ -231,8 +248,15 @@
             $('#stok').addClass('bg-slate-300');
             $('#stok').prop('readonly', true);
 
-            $('#hrg_brg').addClass('bg-slate-300');
-            $('#hrg_brg').prop('disabled', true);
+            $('#expired_brg').addClass('bg-slate-300');
+            $('#expired_brg').prop('disabled', true);
+
+            $('#hrg_brg_beli').addClass('bg-slate-300');
+            $('#hrg_brg_beli').prop('disabled', true);
+
+            $('#hrg_brg_jual').addClass('bg-slate-300');
+            $('#hrg_brg_jual').prop('disabled', true);
+
 
             $('#btnEdit').show();
 
@@ -250,9 +274,14 @@
             $('#ktg_brg').removeClass('bg-slate-300');
             $('#ktg_brg').prop('disabled', false);
 
+            $('#expired_brg').removeClass('bg-slate-300');
+            $('#expired_brg').prop('disabled', false);
 
-            $('#hrg_brg').removeClass('bg-slate-300');
-            $('#hrg_brg').prop('disabled', false);
+            $('#hrg_brg_beli').removeClass('bg-slate-300');
+            $('#hrg_brg_beli').prop('disabled', false);
+
+            $('#hrg_brg_jual').removeClass('bg-slate-300');
+            $('#hrg_brg_jual').prop('disabled', false);
         }
     </script>
 @endsection

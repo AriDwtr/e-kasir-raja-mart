@@ -16,7 +16,9 @@ class BarangModel extends Model
         'nm_brg',
         'stok',
         'ktg_brg',
-        'hrg_brg',
+        'hrg_brg_beli',
+        'hrg_brg_jual',
+        'expired_brg',
         'foto_brg'
     ];
 }

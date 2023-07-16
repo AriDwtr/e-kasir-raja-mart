@@ -32,6 +32,8 @@
                                 Pengguna</label>
                             <input type="text" id="nm_user" name="nm_user" value="{{ Auth::user()->nm_user }}"
                                 class="block font-bold w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <p id="nm_user_error"
+                                class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium"></p>
                         </div>
                         <div class=" mb-3">
                             <label for="email_user"
@@ -39,6 +41,8 @@
                                 Pengguna</label>
                             <input type="text" id="email_user" name="email_user" value="{{ Auth::user()->email_user }}"
                                 class="block font-bold w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <p id="email_user_error"
+                                class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium"></p>
                         </div>
                         <div class=" mb-1">
                             <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis
@@ -60,14 +64,15 @@
                         <div class=" mb-3">
                             <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role
                                 Sistem</label>
-                                <select name="role" id="role" class="bg-gray-50 font-bold border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <?php
+                            <select name="role" id="role"
+                                class="bg-gray-50 font-bold border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <?php
                                 $role = DB::table('t_tipe_akun')->get();
                                 foreach ($role as $roleAkun) {
-                                    echo '<option value="' . $roleAkun->id . '" ' . (Auth::user()->role == $roleAkun->id ? 'selected' : '') . '>'. strtoupper($roleAkun->tipe_akun) .'</option>';
+                                    echo '<option value="' . $roleAkun->id . '" ' . (Auth::user()->role == $roleAkun->id ? 'selected' : '') . '>' . strtoupper($roleAkun->tipe_akun) . '</option>';
                                 }
-                            ?>
-                                </select>
+                                ?>
+                            </select>
                         </div>
                         <div class=" mb-3">
                             <label for="ft_user"
@@ -105,7 +110,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('profile.update', ['type'=>'profile']) }}",
+                    url: "{{ route('profile.update', ['type' => 'profile']) }}",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -121,6 +126,13 @@
                         setTimeout(function() {
                             window.location.reload();
                         }, 800);
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        if (err.status === 422) {
+                            var err = err.responseJSON;
+                            inputValidate(err.errors);
+                        }
                     }
                 });
 
@@ -131,13 +143,13 @@
                 var data = $('#change-password').serialize();
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('profile.update', ['type'=>'password']) }}",
+                    url: "{{ route('profile.update', ['type' => 'password']) }}",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     data: data,
                     dataType: "json",
-                    success: function (res) {
+                    success: function(res) {
                         $('[data-modal-hide="password-modal"]').click();
                         $('#change-password')[0].reset();
                         ToastTopEnd.fire({
@@ -146,7 +158,7 @@
                             title: res.success.message,
                         });
                     },
-                    error: function (err) {
+                    error: function(err) {
                         if (err.status === 422) {
                             var err = err.responseJSON;
                             inputValidate(err.errors);

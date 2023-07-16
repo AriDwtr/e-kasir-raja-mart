@@ -24,7 +24,8 @@
                             @else
                                 <img id="img"
                                     class="rounded-full border-2 border-blue-500 w-40 h-40 transition duration-300 transform hover:scale-110"
-                                    src="{{ asset('storage/img/foto/' . $data['ft_user'] ?? '') }}" alt="image description">
+                                    src="{{ isset($data['ft_user']) ? asset('storage/img/foto/' . $data['ft_user']) : asset('storage/img/foto/default.png') }}"
+                                    alt="image description">
                             @endif
                         </div>
                     </div>
@@ -34,10 +35,12 @@
                 <div class="flex justify-center text-2xl font-extrabold">
                     {{ Str::upper('form pendaftaraan pegawai baru') }}
                 </div>
-                <div class="mt-1 w-full" >
-                    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-300 dark:bg-gray-800 dark:text-green-400" role="alert">
-                        <span class="font-medium">Catatan :</span> Password Default Pertama Kali Pengguna adalah <span class="font-bold">123456</span>
-                      </div>
+                <div class="mt-1 w-full" id="info-password">
+                    <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-300 dark:bg-gray-800 dark:text-green-400"
+                        role="alert">
+                        <span class="font-medium">Catatan :</span> Password Default Pertama Kali Pengguna adalah <span
+                            class="font-bold">123456</span>
+                    </div>
                 </div>
                 <form method="post" id="add-pegawai" enctype="multipart/form-data" autocomplete="off">
                     @csrf
@@ -47,7 +50,8 @@
                         <div class=" mb-3">
                             <label for="nm_user" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                 Pengguna</label>
-                            <input type="text" placeholder="Nama Pengguna" id="nm_user" name="nm_user" value="{{ $data['nm_user'] ?? '' }}"
+                            <input type="text" placeholder="Nama Pengguna" id="nm_user" name="nm_user"
+                                value="{{ $data['nm_user'] ?? '' }}"
                                 class="block font-bold w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <p id="nm_user_error"
                                 class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium"></p>
@@ -56,7 +60,8 @@
                             <label for="email_user"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
                                 Pengguna</label>
-                            <input type="text" placeholder="Email Pengguna" id="email_user" name="email_user" value="{{ $data['email_user'] ?? '' }}"
+                            <input type="text" placeholder="Email Pengguna" id="email_user" name="email_user"
+                                value="{{ $data['email_user'] ?? '' }}"
                                 class="block font-bold w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <p id="email_user_error"
                                 class="error-message mt-2 text-sm text-red-600 dark:text-red-500 font-medium"></p>
@@ -86,7 +91,7 @@
                                 <?php
                                 $roleQuery = DB::table('t_tipe_akun')->get();
                                 foreach ($roleQuery as $roleAkun) {
-                                    echo '<option value="' . $roleAkun->id . '" ' . (($data['role'] ?? '') == 'P' ? 'selected' : '') . '>' . strtoupper($roleAkun->tipe_akun) . '</option>';
+                                    echo '<option value="' . $roleAkun->id . '" ' . (($data['role'] ?? '') == $roleAkun->id ? 'selected' : '') . '>' . strtoupper($roleAkun->tipe_akun) . '</option>';
                                 }
                                 ?>
                             </select>
@@ -102,13 +107,14 @@
                             <button type="button" id="submit-pegawai"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Buat
                                 Pegawai Baru</button>
-                            {{-- <button type="button" id="password-pegawai" data-modal-target="password-modal"
+                            <button type="button" id="password-pegawai" data-modal-target="password-modal"
                                 data-modal-toggle="password-modal"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Ubah
-                                Password</button> --}}
+                                Password</button>
                         </div>
                     </div>
                 </form>
+                @include('pegawai.setpassword')
             </div>
         </div>
     </div>
@@ -125,7 +131,6 @@
                 e.preventDefault();
                 var form = document.getElementById('add-pegawai');
                 var data = new FormData(form);
-
                 $.ajax({
                     type: "POST",
                     url: "{{ route('pegawai.post') }}",
@@ -156,34 +161,34 @@
 
             });
 
-            // $('#submitPassword').click(function(e) {
-            //     e.preventDefault();
-            //     var data = $('#change-password').serialize();
-            //     $.ajax({
-            //         type: "POST",
-            //         url: "{{ route('profile.update', ['type' => 'password']) }}",
-            //         headers: {
-            //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            //         },
-            //         data: data,
-            //         dataType: "json",
-            //         success: function(res) {
-            //             $('[data-modal-hide="password-modal"]').click();
-            //             $('#change-password')[0].reset();
-            //             ToastTopEnd.fire({
-            //                 icon: 'success',
-            //                 color: '#00cc00',
-            //                 title: res.success.message,
-            //             });
-            //         },
-            //         error: function(err) {
-            //             if (err.status === 422) {
-            //                 var err = err.responseJSON;
-            //                 inputValidate(err.errors);
-            //             }
-            //         }
-            //     });
-            // });
+            $('#submitPassword').click(function(e) {
+                e.preventDefault();
+                var data = $('#change-password').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('pegawai.password', ['id' => ($data['id'] ?? '')]) }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: data,
+                    dataType: "json",
+                    success: function(res) {
+                        $('[data-modal-hide="password-modal"]').click();
+                        $('#change-password')[0].reset();
+                        ToastTopEnd.fire({
+                            icon: 'success',
+                            color: '#00cc00',
+                            title: res.success.message,
+                        });
+                    },
+                    error: function(err) {
+                        if (err.status === 422) {
+                            var err = err.responseJSON;
+                            inputValidate(err.errors);
+                        }
+                    }
+                });
+            });
 
             $('#file').change(function() {
                 var file = $(this)[0].files[0];
@@ -244,6 +249,7 @@
                 $('#password-pegawai').hide();
             } else {
                 $('#submit-pegawai').html('Update Data Pegawai');
+                $('#info-password').hide();
             }
         }
     </script>

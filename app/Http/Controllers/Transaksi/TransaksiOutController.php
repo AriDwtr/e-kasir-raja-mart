@@ -18,10 +18,20 @@ class TransaksiOutController extends Controller
         $this->transaksiOutRepo = $transaksiOutRepo;
     }
 
+    public function index(){
+        return view('transaksi_out.transaksi_out');
+    }
+
+    public function getTransaksiOUT(){
+        $data = $this->transaksiOutRepo->getTransaksiOut();
+        return response()->json($data);
+    }
+
     public function pushTransaksi()
     {
-        $this->transaksiOutRepo->post($this->request->all());
-
+        $data = $this->request->all();
+        $this->transaksiOutRepo->post($data);
+        // dd($data);
         return response()->json(['success', 'message'=>'Transaksi Berhasil'], 200);
 
     }

@@ -15,9 +15,11 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->bigInteger('kd_brg')->unique();
             $table->string('nm_brg', 100);
+            $table->string('ktg_brg', 5)->nullable();
             $table->bigInteger('stok');
-            $table->string('ktg_brg', 100)->nullable();
-            $table->string('hrg_brg', 20);
+            $table->string('hrg_brg_beli', 20);
+            $table->string('hrg_brg_jual', 20);
+            $table->date('expired_brg')->nullable();
             $table->text('foto_brg')->nullable();
             $table->timestamps();
         });

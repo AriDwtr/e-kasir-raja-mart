@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('kd_brg');
             $table->integer('jml_brg');
-            $table->string('user', '100');
+            $table->string('hrg_brg_jual', 20);
+            $table->text('user');
             $table->timestamps();
         });
     }

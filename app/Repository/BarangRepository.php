@@ -28,15 +28,17 @@ class BarangRepository {
 
     public function add(array $post)
     {
-        $post['hrg_brg'] = str_replace(',', '', $post['hrg_brg']);
-        $post['id'] = '234343-2873834jskad';
+        unset($post['action']);
+        $post['stok'] = $post['stok_in'];
+        $post['id'] = Str::uuid();
         return $this->barang::create($post);
     }
 
     public function update(array $post)
     {
-        $post['hrg_brg'] = str_replace(',', '', $post['hrg_brg']);
-        return $this->barang::where('kd_brg', $post['kd_brg'])->update(['nm_brg'=>$post['nm_brg'],'ktg_brg'=>$post['ktg_brg'],'hrg_brg'=>$post['hrg_brg']]);
+        $post['hrg_brg_beli'] = str_replace(',', '', $post['hrg_brg_beli']);
+        $post['hrg_brg_jual'] = str_replace(',', '', $post['hrg_brg_jual']);
+        return $this->barang::where('kd_brg', $post['kd_brg'])->update(['nm_brg'=>$post['nm_brg'],'ktg_brg'=>$post['ktg_brg'],'hrg_brg_beli'=>$post['hrg_brg_beli'], 'hrg_brg_jual'=>$post['hrg_brg_jual'], 'expired_brg'=>$post['expired_brg']]);
     }
 
     public function delete($kd_brg)
@@ -45,5 +47,3 @@ class BarangRepository {
     }
 
 }
-
-?>

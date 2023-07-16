@@ -1,15 +1,25 @@
 @extends('theme.master')
 
 @section('konten')
+    @php
+        $role = DB::Table('t_tipe_akun')
+            ->select('m_super_admin', 'm_admin')
+            ->where('id', Auth::user()->role)
+            ->first();
+        echo '<input type="hidden" id="role-akun-super-admin" value=' . $role->m_super_admin . ' />';
+        echo '<input type="hidden" id="role-akun-admin" value=' . $role->m_admin . ' />';
+    @endphp
     <div class="flex-wrap h-auto p-4 rounded bg-slate-100 dark:bg-gray-800">
         <div class="w-full flex-wrap p-3 h-auto rounded bg-white dark:bg-gray-800">
             <div class="flex mb-2 p-1">
-                <a href=" {{ route('barang.form', ['type' => 'add']) }}"
-                    class="py-2 px-2 mr-2 bg-blue-500 hover:bg-blue-900 text-white text-sm font-semibold rounded-lg">Add</a>
+                {{-- <a href=" {{ route('barang.form', ['type' => 'add']) }}"
+                    class="py-2 px-2 mr-2 bg-blue-500 hover:bg-blue-900 text-white text-sm font-semibold rounded-lg">Add</a> --}}
+                <button onclick="handlePrint()"
+                    class="py-1 px-2 mr-2  bg-indigo-500 hover:bg-indigo-900 focus:bg-indigo-900 text-white text-sm font-semibold rounded-lg">Print</button>
                 <button onclick="handleEdit()"
-                    class="py-1 px-2 mr-2  bg-yellow-300 hover:bg-yellow-900 text-white text-sm font-semibold rounded-lg">View</button>
+                    id='edit' class="py-1 px-2 mr-2  bg-yellow-300 hover:bg-yellow-900 text-white text-sm font-semibold rounded-lg">View</button>
                 <button onclick="handleDelete()"
-                    class="py-1 px-2 mr-2  bg-red-500 hover:bg-red-900 focus:bg-red-900 text-white text-sm font-semibold rounded-lg">Delete</button>
+                    id='delete' class="py-1 px-2 mr-2  bg-red-500 hover:bg-red-900 focus:bg-red-900 text-white text-sm font-semibold rounded-lg">Delete</button>
                 <input type="text" id="search-input"
                     class=" ml-auto font-semibold mr-2 py-1 px-2 border border-gray-300 rounded-sm"
                     placeholder="Cari Barang.....">
@@ -24,7 +34,7 @@
 @endsection
 
 @section('js-include')
-    <script src="{{ asset('assets/barcodejs/JsBarcode.all.min.js')}}"></script>
+    <script src="{{ asset('assets/barcodejs/JsBarcode.all.min.js') }}"></script>
     <script src="{{ asset('assets/gridjs/dist/gridjs.umd.js') }}"></script>
     <script>
         const fetchData = async () => {
@@ -42,7 +52,7 @@
                                 name: 'Pilih',
                                 formatter: (cell, row) => {
                                     return gridjs.html(
-                                        `<div style="text-align: center;"><input type="checkbox" name="pilih[]" value="${cell}" /></div>`
+                                        `<div style="text-align: center;"><input type="checkbox" class="kd_brg" name="pilih[]" value="${cell}" /></div>`
                                     );
                                 },
                             },
@@ -55,7 +65,8 @@
                             },
                             'Nama Barang',
                             'Stok Barang',
-                            'Harga Barang',
+                            'Harga Barang Beli',
+                            'Harga Barang Jual',
                         ],
                         data: () => {
                             return new Promise((resolve) => {
@@ -66,7 +77,8 @@
                                             generateBarcode(item.kd_brg),
                                             item.nm_brg.toUpperCase(),
                                             item.stok + ' / Pcs',
-                                            formatRupiah(item.hrg_brg),
+                                            formatRupiah(item.hrg_brg_beli),
+                                            formatRupiah(item.hrg_brg_jual),
                                         ])
                                     ),
                                     1000
@@ -93,7 +105,8 @@
                             item.kd_brg.toString().toLowerCase().includes(searchTerm) ||
                             item.nm_brg.toLowerCase().includes(searchTerm) ||
                             item.stok.toString().toLowerCase().includes(searchTerm) ||
-                            item.hrg_brg.toString().includes(searchTerm)
+                            item.hrg_brg_beli.toString().includes(searchTerm) ||
+                            item.hrg_brg_jual.toString().includes(searchTerm)
                         );
                     });
 
@@ -129,6 +142,30 @@
 
             return barcodeUrl;
         };
+
+        function handlePrint() {
+
+            var laravelRoutes = <?php echo json_encode([
+                'barangPrint' => route('barang.print', ['id' => '__id__']),
+            ]); ?>;
+
+
+            const checkboxes = document.querySelectorAll('input[name="pilih[]"]:checked');
+            const selectedValues = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+            if (selectedValues.length < 1) {
+                gagalAlert('Gagal !!! Belum Milih Barang');
+                return;
+            };
+
+            var kd_brg = [];
+            $('input.kd_brg:checked').each(function() {
+                kd_brg.push($(this).val())
+            });
+
+            const url = laravelRoutes.barangPrint.replace('__id__', kd_brg);
+            window.open(url, "_blank");
+        }
 
         function handleDelete() {
             const checkboxes = document.querySelectorAll('input[name="pilih[]"]:checked');
@@ -210,6 +247,17 @@
                 title: message,
             });
         };
+
+        function RoleAkun() {
+            var roleSuperAdmin = $('#role-akun-super-admin').val();
+            var roleAdmin = $('#role-akun-admin').val();
+            if (roleSuperAdmin != 1 && roleAdmin != 1) {
+                $('#edit, #delete').hide();
+            }
+
+        }
+
+        RoleAkun();
 
         fetchData();
     </script>

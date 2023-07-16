@@ -37,6 +37,7 @@ class PegawaiController extends Controller
         if ($type == 'add') {
             $data['type'] = $type;
         }elseif ($type == 'update') {
+            $data = $this->pegawai->getUser($type, $id);
             $data['type'] = $type;
             $data['id']=$id;
         }
@@ -46,10 +47,19 @@ class PegawaiController extends Controller
 
     public function setPegawai(){
         $data = $this->request->all();
-        $validator = Validator::make($data, [
-            'nm_user'=>'required',
-            'email_user'=>'required|unique:t_user,email_user'
-        ]);
+        unset($data['_token']);
+
+        $validatorRules = [
+            'nm_user' => 'required'
+        ];
+
+        if ($data['type']=='add') {
+            $validatorRules['email_user']='required|unique:t_user,email_user';
+        }elseif ($data['type']=='update') {
+            $validatorRules['email_user']='required';
+        }
+
+        $validator = Validator::make($data, $validatorRules);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -73,8 +83,41 @@ class PegawaiController extends Controller
 
             $this->pegawai->Post($data);
             return response()->json(['success'=>['message'=>'Menambahkan Pengguna Baru']], 200);
+        }else{
+            unset($data['type']);
+            $id = $data['id'];
+            if ($this->request->hasFile('ft_user')) {
+                $file = $this->request->file('ft_user');
+                $fileName = $data['nm_user'].'.'.$file->getClientOriginalExtension();
+                if (Storage::exists('public/img/foto'. $fileName)) {
+                    Storage::delete('public/img/foto/'. $fileName);
+                }
+                $file->storeAs('public/img/foto/', $fileName);
+                $data['ft_user'] = $fileName;
+                $this->pegawai->Update($data, $id);
+                return response()->json(['success'=> ['message'=>'Memperbaharui Akun Pegawai']], 200);
+            }
+
+            $this->pegawai->Update($data, $id);
+            return response()->json(['success'=>['message'=>'Memperbaharui Akun Pegawai']], 200);
         }
-        // dd();
+    }
+
+    public function setPegawaiPassword($id){
+        $data = $this->request->all();
+        $validator = Validator::make($data, [
+            'password'=>'required|min:6',
+            'passwordretype'=>'required|same:password'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()], 422);
+        }
+
+        $data['password'] = Hash::make($data['password']);
+        unset($data['passwordretype']);
+        $this->pegawai->update($data, $id);
+        return response()->json(['success'=>['message'=>'Berhasil Perbaharui Password']], 200);
     }
 
     public function deletePegawai($id){

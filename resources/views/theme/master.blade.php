@@ -25,7 +25,7 @@ $site = DB::table('t_setting_site')->select('nama_site')->where('id', 1)->first(
         integrity="sha256-aUL5sUzmON2yonFVjFCojGULVNIOaPxlH648oUtA/ng=" crossorigin="anonymous">
 </head>
 
-<body class=" bg-slate-700">
+<body class=" bg-zinc-200">
     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar"
         type="button"
         class="items-center fixed p-2 mt-2 ml-3 bg-red-600 text-white text-sm rounded-lg sm:hidden hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">

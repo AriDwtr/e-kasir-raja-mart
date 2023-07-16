@@ -22,7 +22,7 @@
         <div class="mt-2 p-3">
             <form id="form-site-setting">
                 @csrf
-                <div class="mb-6">
+                <div class="mb-3">
                     <label for="nama_site" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Site /
                         Website</label>
                     <input type="text" id="nama_site" name="nama_site" value="{{ $data->nama_site }}"
@@ -40,6 +40,19 @@
                     </path>
                 </svg>
                 Edit</button>
+            <button id="copyButton" onclick="copyText()" type="button"
+                class="inline-flex items-center py-2 pr-3 pl-2 mr-2 bg-stone-500 hover:bg-stone-900 text-white text-sm font-semibold rounded-lg">
+                <svg aria-hidden="true" class="w-4 h-4 mr-1 fill-current" fill="currentColor" viewBox="0 0 23 23"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M17.663 3.118c.225.015.45.032.673.05C19.876 3.298 21 4.604 21 6.109v9.642a3 3 0 01-3 3V16.5c0-5.922-4.576-10.775-10.384-11.217.324-1.132 1.3-2.01 2.548-2.114.224-.019.448-.036.673-.051A3 3 0 0113.5 1.5H15a3 3 0 012.663 1.618zM12 4.5A1.5 1.5 0 0113.5 3H15a1.5 1.5 0 011.5 1.5H12z"
+                        clip-rule="evenodd" />
+                    <path
+                        d="M3 8.625c0-1.036.84-1.875 1.875-1.875h.375A3.75 3.75 0 019 10.5v1.875c0 1.036.84 1.875 1.875 1.875h1.875A3.75 3.75 0 0116.5 18v2.625c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625v-12z" />
+                    <path
+                        d="M10.5 10.5a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963 5.23 5.23 0 00-3.434-1.279h-1.875a.375.375 0 01-.375-.375V10.5z" />
+                </svg>
+                Copy Text</button>
             <button id="btnSubmit" type="button"
                 class="inline-flex items-center py-2 pr-3 pl-2 mr-2 bg-green-500 hover:bg-green-900 text-white text-sm font-semibold rounded-lg"
                 style="">
@@ -79,6 +92,7 @@
                 $('#btnSubmit').show();
                 $('#btnCancel').show();
                 $('#btnEdit').hide();
+                $('#copyButton').hide();
 
             });
 
@@ -118,13 +132,39 @@
                     $('#btnSubmit').hide();
                     $('#btnCancel').hide();
                     $('#btnEdit').show();
-                }else {
+                    $('#copyButton').show();
+                } else {
                     $('#nama_site').attr('disabled', true);
                     $('#btnSubmit').hide();
                     $('#btnCancel').hide();
                     $('#btnEdit').hide();
+                    $('#copyButton').show();
                 }
             }
         });
+
+        function copyText() {
+            const copyInput = document.getElementById('nama_site');
+            // Create a temporary input element and set its value to the text to be copied
+            const tempInput = document.createElement('input');
+            tempInput.value = copyInput.value;
+            document.body.appendChild(tempInput);
+
+            // Select the text in the temporary input
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the selected text to the clipboard
+            document.execCommand('copy');
+
+            // Remove the temporary input
+            document.body.removeChild(tempInput);
+
+            ToastTopEnd.fire({
+                icon: 'success',
+                color: '#00cc00',
+                title: 'Text Berhasil Di Salin',
+            });
+        }
     </script>
 @endsection

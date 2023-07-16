@@ -14,6 +14,7 @@ class TransaksiOutModel extends Model
     protected $fillable = [
         'kd_brg',
         'jml_brg',
+        'hrg_brg_jual',
         'user',
     ];
 }

@@ -163,22 +163,22 @@
 
         function handleEdit() {
             var laravelRoutes = <?php echo json_encode([
-                'pegawaiForm' => route('pegawai.form', ['type' => 'view', 'id' => '__id__']),
+                'pegawaiForm' => route('pegawai.form', ['type' => 'update', 'id' => '__id__']),
             ]); ?>;
 
             const checkboxes = document.querySelectorAll('input[name="pilih[]"]:checked');
             const selectedValues = Array.from(checkboxes).map(checkbox => checkbox.value);
 
             if (selectedValues.length < 1) {
-                gagalAlert('Gagal !!! Belum Milih Barang');
+                gagalAlert('Gagal !!! Belum Milih Pegawai');
                 return;
             } else if (selectedValues.length > 1) {
-                gagalAlert('Gagal !!! Menu View Hanya Untuk Satu Barang Saja');
+                gagalAlert('Gagal !!! Menu View Hanya Untuk Satu Pegawai Saja');
                 return;
             }
 
             const id = selectedValues[0];
-            const url = laravelRoutes.barangForm.replace('__id__', id);
+            const url = laravelRoutes.pegawaiForm.replace('__id__', id);
             window.location.href = url;
         };
 

@@ -32,33 +32,44 @@ class ProfileController extends Controller
         $data = [];
         $data = $this->request->all();
         $id = Auth::user()->id;
-        $validator = Validator::make($data, [
-            'password'=>'required|min:6',
-            'passwordretype'=>'required|same:password'
-        ]);
+
+        if ($type == 'profile') {
+            $validatorRules = [
+                'nm_user' => 'required',
+                'email_user' => 'required'
+            ];
+        } else {
+            $validatorRules = [
+                'password' => 'required|min:6',
+                'passwordretype' => 'required|same:password'
+            ];
+        }
+
+        $validator = Validator::make($data, $validatorRules);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         if ($type == 'profile') {
             if ($this->request->hasFile('ft_user')) {
                 $file = $this->request->file('ft_user');
-                $fileName = $data['nm_user'].'.'.$file->getClientOriginalExtension();
-                if (Storage::exists('public/img/foto'. $fileName)) {
-                    Storage::delete('public/img/foto/'. $fileName);
+                $fileName = $data['nm_user'] . '.' . $file->getClientOriginalExtension();
+                if (Storage::exists('public/img/foto' . $fileName)) {
+                    Storage::delete('public/img/foto/' . $fileName);
                 }
                 $file->storeAs('public/img/foto/', $fileName);
                 $data['ft_user'] = $fileName;
                 $this->userRepo->Update($data, $id);
-                return response()->json(['success'=> ['message'=>'Profile Berhasil Di Perbaharui']], 200);
+                return response()->json(['success' => ['message' => 'Profile Berhasil Di Perbaharui']], 200);
             }
             $this->userRepo->update($data, $id);
-            return response()->json(['success'=>['message'=>'Profile Berhasil Di Perbaharui']], 200);
-        }else{
-            if ($validator->fails()) {
-                return response()->json(['errors'=>$validator->errors()], 422);
-            }
+            return response()->json(['success' => ['message' => 'Profile Berhasil Di Perbaharui']], 200);
+        } else {
             $data['password'] = Hash::make($data['password']);
             unset($data['passwordretype']);
             $this->userRepo->update($data, $id);
-            return response()->json(['success'=>['message'=>'Berhasil Perbaharui Password']], 200);
-            // dd($data);
+            return response()->json(['success' => ['message' => 'Berhasil Perbaharui Password']], 200);
         }
     }
 }

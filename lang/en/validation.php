@@ -167,16 +167,23 @@ return [
             'rule-name' => 'custom-message',
         ],
         'kd_brg' => [
-            'required' => 'Kode Barang Tidak Boleh Kosong'
+            'required' => 'Kode Barang Tidak Boleh Kosong',
+            'unique' => 'Kode Barang Telah Terpakai',
         ],
         'nm_brg' => [
-            'required' => 'Nama Barang Tidak Boleh Kosong'
+            'required' => 'Nama Barang Tidak Boleh Kosong',
         ],
         'stok' => [
             'required' => 'Stok Tidak Boleh Kosong'
         ],
-        'hrg_brg' => [
-            'required' => 'Harga Barang Tidak Boleh Kosong'
+        'stok_in' => [
+            'required' => 'Stok Masuk Tidak Boleh Kosong'
+        ],
+        'hrg_brg_beli' => [
+            'required' => 'Harga Beli Barang Tidak Boleh Kosong'
+        ],
+        'hrg_brg_jual' => [
+            'required' => 'Harga jual Barang Tidak Boleh Kosong'
         ],
         'password' => [
             'required' => 'Password Tidak Boleh Kosong',
